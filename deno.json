@@ -1,6 +1,7 @@
 {
     "imports": {
         "@concepts/": "./src/concepts/",
+        "@felix/argon2": "jsr:@felix/argon2@^3.0.2",
         "@utils/": "./src/utils/"
     }
 }
