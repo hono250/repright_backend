@@ -1,5 +1,7 @@
 {
     "thinkingConfig": {
         "includeThoughts": true
-    }
+    },
+    "maxOutputTokens": 2000,
+    "temperature": 1.0
 }

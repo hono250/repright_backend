@@ -1,0 +1,73 @@
+# Design Evolution from Assignment 2
+
+## Overview
+This document tracks significant changes made to the RepRight concept design based on  feedback and implementation discoveries.
+
+## Concept Refinements
+
+### 1. WorkoutLog: Added getSummary Action
+**Rationale:** ProgressionGuidance was improperly dependent on WorkoutLog's internal state. Concepts cannot directly access each other's state - they can only pass data through action return values in syncs.
+
+**Change:** Added `getSummary()` action that outputs structured workout data (recent sets, session count, dates) suitable for LLM analysis. This creates a clean interface between concepts.
+
+**Impact:** ProgressionGuidance now receives all necessary data through the sync without coupling to WorkoutLog's implementation.
+
+---
+
+### 2. ProgressionGuidance: Added User Interaction Actions
+**Rationale:** There was missing actions for accepting/dismissing recommendations. The original design generated recommendations but had no way for users to act on them.
+
+**Changes Added:**
+- `acceptRecommendation()` - marks recommendation as accepted, returns values for workout logging
+- `dismissRecommendation()` - allows user to reject suggestion
+- `getRecommendationHistory()` - lets users browse past suggestions
+- Added `status` field to Recommendation state ("pending" | "accepted" | "dismissed")
+
+**Impact:** Users can now interact with AI suggestions rather than just viewing them. Supports what's described in the user journeys.
+
+---
+
+### 3. ProgressionGuidance: Removed recentSets Parameter
+**Rationale:** Original design had `generateRecommendation()` accepting `recentSets: set of WorkoutSet`, which would require passing WorkoutLog's internal state structure. This violates concept independence.
+
+**Change:** Replaced with `workoutSummary: Object` parameter that accepts the structured output from WorkoutLog's `getSummary()` action.
+
+**Impact:** Maintains concept modularity 
+
+---
+
+### 4. UserAuthentication: Simplified for MVP
+**Rationale:** For initial implementation, full session management with expiration is more complex than needed. Can iterate later.
+
+**Change:** Kept session-based auth design but will implement with simpler token validation initially.
+
+**Impact:** Allows focus on core fitness functionality while maintaining security basics.
+
+---
+
+## Missing Sync (TODO)
+**Feedback:** Missing a sync that generates a recommendation (based on workout history) when the workout starts, and then if its accepted, that's what will be logged in workoutlog.
+
+**TODO:** Implement this sync in Assignment 4b
+
+The sync will:
+1. When user starts workout → call WorkoutLog.getSummary()
+2. Pass summary to ProgressionGuidance.generateRecommendationLLM()
+3. If user accepts → use returned values in WorkoutLog.logSet()
+
+---
+
+## LLM Reliability Concerns
+**Feedback:** Questions about LLm reliability on these tasks suggests plan for some fallbacks.
+
+**Mitigation Strategies:**
+1. **Validators** - Already implemented in A3: weight change limits, rep range checks, plateau-strategy consistency
+2. **User control** - Accept/dismiss actions let users override bad suggestions
+3. **Recommendation history** - Users can see all past suggestions to identify patterns of good/bad advice
+4. **Multiple prompt variants** - Tested in A3, using Context-Aware variant that performs best
+5. **Fallback UI** - If LLM fails, users can still manually log workouts without recommendations
+
+---
+
+## Interesting Moments Log
+(Will be populated during implementation)
