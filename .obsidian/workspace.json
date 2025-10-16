@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "design/test-outputs/UserAuthentication-tests.md",
+                "file": "design/design-evolutions.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "UserAuthentication-tests"
+              "title": "design-evolutions"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "design/test-outputs/UserAuthentication-tests.md",
+                "file": "design/design-evolutions.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for UserAuthentication-tests"
+              "title": "Backlinks for design-evolutions"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "design/test-outputs/UserAuthentication-tests.md",
+                "file": "design/design-evolutions.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of UserAuthentication-tests"
+              "title": "Outline of design-evolutions"
             }
           }
         ],
@@ -172,12 +172,21 @@
   },
   "active": "9b42b4503c7d88ad",
   "lastOpenFiles": [
+    "context/design/design-evolutions.md/20251016_194144.85bd2b26.md",
+    "context/design/design-evolutions.md/steps/_.5968ebae.md",
+    "context/src/concepts/UserAuthentication/UserAuthenticationConcept.test.ts/20251016_183647.05c4ffb6.md",
+    "design/design-evolutions.md",
+    "design/concepts/UserAuthetication.md",
+    "context/design/concepts/UserAuthetication.md/20251016_171143.42725564.md",
+    "design/concepts/ProgressionGuidance.md",
+    "design/brainstorming/interesting-moments-snapshot.md",
+    "context/design/design-evolutions.md/20251016_171218.7d1e625a.md",
+    "design/test-outputs/UserAuthentication-tests.md",
     "context/design/test-outputs/UserAuthentication-tests.md/steps/_.09436a55.md",
     "context/design/test-outputs/UserAuthentication-tests.md/steps",
     "context/design/test-outputs/UserAuthentication-tests.md/20251016_185650.111af123.md",
     "context/design/test-outputs/UserAuthentication-tests.md",
     "design/test-outputs/ProgressionGuidance-tests.md",
-    "design/test-outputs/UserAuthentication-tests.md",
     "context/design/test-outputs/ProgressionGuidance-tests.md/steps/_.9e95c74f.md",
     "context/design/test-outputs/ProgressionGuidance-tests.md/steps",
     "context/design/test-outputs/ProgressionGuidance-tests.md/20251016_185432.f6e85255.md",
@@ -188,12 +197,9 @@
     "context/design/test-outputs/WorkoutLog-tests.md/20251016_185225.31169930.md",
     "context/design/test-outputs/WorkoutLog-tests.md",
     "context/design/test-outputs",
-    "design/concepts/ProgressionGuidance.md",
     "design/learning/understanding-concepts.md",
-    "design/design-evolutions.md",
     "design/test-outputs",
     "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.test.ts/20251016_183357.a78e003f.md",
-    "context/src/concepts/UserAuthentication/UserAuthenticationConcept.test.ts/20251016_183647.05c4ffb6.md",
     "context/src/concepts/UserAuthentication/UserAuthenticationConcept.test.ts",
     "context/src/concepts/UserAuthentication/UserAuthenticationConcept.ts/20251016_183636.ee6b5304.md",
     "context/src/concepts/UserAuthentication/UserAuthenticationConcept.ts",
@@ -201,12 +207,6 @@
     "context/src/concepts/WorkoutLog/WorkoutLogConcept.test.ts/20251016_183212.5be893de.md",
     "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.test.ts",
     "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.ts/20251016_183337.d1761aac.md",
-    "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.ts",
-    "context/src/concepts/WorkoutLog/WorkoutLogConcept.ts/20251016_183153.e02d3181.md",
-    "context/design/concepts/ProgressionGuidance.md/20251016_171023.8ac46db1.md",
-    "context/design/concepts/UserAuthetication.md/20251016_171143.42725564.md",
-    "context/design/concepts/UserAuthetication.md/steps/_.52c2c890.md",
-    "context/design/concepts/WorkoutLog.md/20251016_170940.e8d65af5.md",
-    "design/concepts/WorkoutLog.md"
+    "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.ts"
   ]
 }
