@@ -1,0 +1,55 @@
+# ProgressionGuidance test outputs
+
+[0m[38;5;245mrunning 7 tests from ./src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.test.ts[0m
+Principle: Generate recommendation, user accepts it later ...
+[0m[38;5;245m------- output -------[0m
+📝 Testing operational principle...
+✅ Generated, retrieved, and accepted recommendation
+
+[0m[38;5;245m----- output end -----[0m
+Principle: Generate recommendation, user accepts it later ... [0m[32mok[0m [0m[38;5;245m(713ms)[0m
+Action: dismissRecommendation updates status ...
+[0m[38;5;245m------- output -------[0m
+📝 Testing dismissRecommendation...
+✅ Successfully dismissed recommendation
+
+[0m[38;5;245m----- output end -----[0m
+Action: dismissRecommendation updates status ... [0m[32mok[0m [0m[38;5;245m(702ms)[0m
+Action: getRecommendationHistory returns all recommendations ...
+[0m[38;5;245m------- output -------[0m
+📝 Testing recommendation history...
+✅ Retrieved 3 recommendations from history
+
+[0m[38;5;245m----- output end -----[0m
+Action: getRecommendationHistory returns all recommendations ... [0m[32mok[0m [0m[38;5;245m(689ms)[0m
+Action: generateRecommendationLLM requires 3+ sets ...
+[0m[38;5;245m------- output -------[0m
+📝 Testing insufficient data validation...
+✅ Correctly rejected insufficient data
+
+[0m[38;5;245m----- output end -----[0m
+Action: generateRecommendationLLM requires 3+ sets ... [0m[32mok[0m [0m[38;5;245m(537ms)[0m
+Validator: Rejects extreme weight suggestions (>20% change) ...
+[0m[38;5;245m------- output -------[0m
+📝 Testing weight change validator...
+✅ Validator caught extreme weight hallucination
+
+[0m[38;5;245m----- output end -----[0m
+Validator: Rejects extreme weight suggestions (>20% change) ... [0m[32mok[0m [0m[38;5;245m(598ms)[0m
+Validator: Rejects invalid rep ranges ...
+[0m[38;5;245m------- output -------[0m
+📝 Testing rep range validator...
+✅ Validator caught invalid rep range
+
+[0m[38;5;245m----- output end -----[0m
+Validator: Rejects invalid rep ranges ... [0m[32mok[0m [0m[38;5;245m(578ms)[0m
+Validator: Ensures plateau + progress don't coexist ...
+[0m[38;5;245m------- output -------[0m
+📝 Testing plateau-strategy validator...
+✅ Validator caught plateau-strategy contradiction
+
+[0m[38;5;245m----- output end -----[0m
+Validator: Ensures plateau + progress don't coexist ... [0m[32mok[0m [0m[38;5;245m(541ms)[0m
+
+[0m[32mok[0m | 7 passed | 0 failed [0m[38;5;245m(4s)[0m
+
