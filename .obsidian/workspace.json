@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "design/concepts/ProgressionGuidance.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "ProgressionGuidance"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 402.5
   },
   "right": {
     "id": "ffc60e9763cc384c",
@@ -94,17 +94,16 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
-                "backlinkCollapsed": false,
+                "backlinkCollapsed": true,
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for README"
+              "title": "Backlinks"
             }
           },
           {
@@ -142,16 +141,17 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md",
+                "file": "design/test-outputs/WorkoutLog-tests.md",
                 "followCursor": false,
-                "showSearch": false,
+                "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of README"
+              "title": "Outline of WorkoutLog-tests"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -169,8 +169,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "60ccb8b74e272dda",
+  "active": "9b42b4503c7d88ad",
   "lastOpenFiles": [
-    "README.md"
+    "design/concepts/ProgressionGuidance.md",
+    "design/test-outputs/WorkoutLog-tests.md",
+    "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.test.ts/20251016_183357.a78e003f.md",
+    "design/test-outputs",
+    "context/src/concepts/UserAuthentication/UserAuthenticationConcept.test.ts/20251016_183647.05c4ffb6.md",
+    "context/src/concepts/UserAuthentication/UserAuthenticationConcept.test.ts",
+    "context/src/concepts/UserAuthentication/UserAuthenticationConcept.ts/20251016_183636.ee6b5304.md",
+    "context/src/concepts/UserAuthentication/UserAuthenticationConcept.ts",
+    "context/src/concepts/UserAuthentication",
+    "context/src/concepts/WorkoutLog/WorkoutLogConcept.test.ts/20251016_183212.5be893de.md",
+    "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.test.ts",
+    "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.ts/20251016_183337.d1761aac.md",
+    "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.ts",
+    "context/src/concepts/ProgressionGuidance",
+    "context/src/concepts/WorkoutLog/WorkoutLogConcept.ts/20251016_183153.e02d3181.md",
+    "context/design/concepts/ProgressionGuidance.md/20251016_171023.8ac46db1.md",
+    "context/src/concepts/WorkoutLog/WorkoutLogConcept.test.ts",
+    "context/src/concepts/WorkoutLog/WorkoutLogConcept.ts",
+    "context/src/concepts/WorkoutLog",
+    "context/design/concepts/UserAuthetication.md/20251016_171143.42725564.md",
+    "context/design/concepts/UserAuthetication.md/steps/_.52c2c890.md",
+    "context/design/concepts/WorkoutLog.md/20251016_170940.e8d65af5.md",
+    "design/concepts/WorkoutLog.md",
+    "context/design/brainstorming/questioning.md/20251016_165044.dc4a02f2.md",
+    "context/design/design-evolutions.md/steps/_.a617e163.md",
+    "context/design/design-evolutions.md/20251016_171218.7d1e625a.md",
+    "context/design/design-evolutions.md",
+    "context/design/concepts/UserAuthetication.md",
+    "context/design/concepts/ProgressionGuidance.md/steps/_.9a50e04a.md",
+    "context/design/concepts/ProgressionGuidance.md",
+    "context/design/concepts/WorkoutLog.md/steps/_.d1231ffd.md",
+    "context/design/concepts/WorkoutLog.md",
+    "design/brainstorming/questioning.md",
+    "context/design/brainstorming/questioning.md/20251016_165033.07e056a5.md",
+    "context/design/brainstorming/questioning.md/steps/response.dd13b1d5.md",
+    "context/design/brainstorming/questioning.md/steps/prompt.329ab9e7.md"
   ]
 }
