@@ -136,7 +136,7 @@ View detailed test outputs in `design/test-outputs/`
 ## Future Work
 
 - Frontend implementation
-- - **Workout Templates** - Save and reuse exercise groupings (e.g., "Leg Day", "Push Day") for one-tap workout starts
+- **Workout Templates** - Save and reuse exercise groupings (e.g., "Leg Day", "Push Day") for one-tap workout starts
 - Real-time LLM integration in production 
 - Exercise library with metadata (units, movement types)
 - Advanced analytics and progress visualization
