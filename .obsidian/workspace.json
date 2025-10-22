@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "design/design-evolutions.md",
+                "file": "context/design/tools/generate-api.md/20251021_224707.0543305d.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "design-evolutions"
+              "title": "20251021_224707.0543305d"
             }
           }
         ]
@@ -170,12 +170,27 @@
       "bases:Create new base": false
     }
   },
-  "active": "9b42b4503c7d88ad",
+  "active": "60ccb8b74e272dda",
   "lastOpenFiles": [
+    "design/tools/generate-api.md",
+    "design/tools/api-extraction-from-spec.md",
+    "context/design/tools/generate-api.md/steps/response.6d76b65d.md",
+    "context/design/tools/generate-api.md/steps/prompt.2e341510.md",
+    "context/design/tools/generate-api.md/steps/_.fa3ad648.md",
+    "context/design/tools/generate-api.md/steps/_.d1231ffd.md",
+    "context/design/tools/generate-api.md/steps/_.70b30df5.md",
+    "context/design/tools/generate-api.md/steps/Prompt.9de47511.md",
+    "context/design/tools/generate-api.md/steps/Concept Specifications.aaead803.md",
+    "context/design/tools/generate-api.md/steps",
+    "context/design/tools/generate-api.md/20251021_224707.0543305d.md",
+    "context/design/tools/generate-api.md",
+    "context/design/tools",
+    "design/tools/api-extraction-from-code.md",
+    "design/background/implementing-concepts.md",
+    "design/design-evolutions.md",
     "context/design/design-evolutions.md/20251016_194144.85bd2b26.md",
     "context/design/design-evolutions.md/steps/_.5968ebae.md",
     "context/src/concepts/UserAuthentication/UserAuthenticationConcept.test.ts/20251016_183647.05c4ffb6.md",
-    "design/design-evolutions.md",
     "design/concepts/UserAuthetication.md",
     "context/design/concepts/UserAuthetication.md/20251016_171143.42725564.md",
     "design/concepts/ProgressionGuidance.md",
@@ -186,27 +201,12 @@
     "context/design/test-outputs/UserAuthentication-tests.md/steps",
     "context/design/test-outputs/UserAuthentication-tests.md/20251016_185650.111af123.md",
     "context/design/test-outputs/UserAuthentication-tests.md",
-    "design/test-outputs/ProgressionGuidance-tests.md",
-    "context/design/test-outputs/ProgressionGuidance-tests.md/steps/_.9e95c74f.md",
     "context/design/test-outputs/ProgressionGuidance-tests.md/steps",
-    "context/design/test-outputs/ProgressionGuidance-tests.md/20251016_185432.f6e85255.md",
-    "context/design/test-outputs/ProgressionGuidance-tests.md",
-    "design/test-outputs/WorkoutLog-tests.md",
-    "context/design/test-outputs/WorkoutLog-tests.md/steps/_.14052156.md",
     "context/design/test-outputs/WorkoutLog-tests.md/steps",
-    "context/design/test-outputs/WorkoutLog-tests.md/20251016_185225.31169930.md",
-    "context/design/test-outputs/WorkoutLog-tests.md",
     "context/design/test-outputs",
-    "design/learning/understanding-concepts.md",
     "design/test-outputs",
-    "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.test.ts/20251016_183357.a78e003f.md",
     "context/src/concepts/UserAuthentication/UserAuthenticationConcept.test.ts",
-    "context/src/concepts/UserAuthentication/UserAuthenticationConcept.ts/20251016_183636.ee6b5304.md",
     "context/src/concepts/UserAuthentication/UserAuthenticationConcept.ts",
-    "context/src/concepts/UserAuthentication",
-    "context/src/concepts/WorkoutLog/WorkoutLogConcept.test.ts/20251016_183212.5be893de.md",
-    "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.test.ts",
-    "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.ts/20251016_183337.d1761aac.md",
-    "context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.ts"
+    "context/src/concepts/UserAuthentication"
   ]
 }

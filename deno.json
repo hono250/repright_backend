@@ -3,5 +3,8 @@
         "@concepts/": "./src/concepts/",
         "@felix/argon2": "jsr:@felix/argon2@^3.0.2",
         "@utils/": "./src/utils/"
+    },
+    "tasks": {
+        "concepts": "deno run --allow-net --allow-read --allow-sys --allow-env src/concept_server.ts --port 8000 --baseUrl /api"
     }
 }
