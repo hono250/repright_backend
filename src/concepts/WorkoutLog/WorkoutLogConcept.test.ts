@@ -103,28 +103,7 @@ Deno.test("Action: logSet requires reps > 0", async () => {
   await client.close();
 });
 
-// Test 6: deleteSet
-Deno.test("Action: deleteSet removes specific workout", async () => {
-  const [db, client] = await testDb();
-  const workoutLog = new WorkoutLogConcept(db);
-
-  console.log("📝 Testing deleteSet...");
-  
-  await workoutLog.logSet(testUser, "Deadlift", 315, 3);
-  const before = await workoutLog.getHistory(testUser, "Deadlift");
-  const setToDelete = before[0];
-  
-  await workoutLog.deleteSet(testUser, "Deadlift", setToDelete.date);
-  
-  const after = await workoutLog.getHistory(testUser, "Deadlift");
-  assertEquals(after.length, before.length - 1, "Should have one less set");
-  
-  console.log("✅ Successfully deleted workout set\n");
-  
-  await client.close();
-});
-
-// Test 7: Error - no history
+// Test 6: Error - no history
 Deno.test("Action: getLastWorkout throws when no history exists", async () => {
   const [db, client] = await testDb();
   const workoutLog = new WorkoutLogConcept(db);

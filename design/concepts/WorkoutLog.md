@@ -41,7 +41,3 @@ After user logs sets with exercise, weight, and reps across multiple workout ses
 
 **Effects:** Return most recent set for pre-filling workout logging UI
 
-### deleteSet(user: User, exercise: Exercise, date: Date)
-**Requires:** WorkoutSet exists with these parameters
-
-**Effects:** Remove WorkoutSet from database

@@ -115,14 +115,4 @@ export default class WorkoutLogConcept {
     };
   }
 
-  /**
-   * Delete a specific set
-   */
-  async deleteSet(user: User, exercise: Exercise, date: Date): Promise<void> {
-    const result = await this.sets.deleteOne({ user, exercise, date });
-    
-    if (result.deletedCount === 0) {
-      throw new Error("WorkoutSet not found");
-    }
-  }
 }
