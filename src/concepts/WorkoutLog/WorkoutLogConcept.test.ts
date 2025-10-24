@@ -92,12 +92,11 @@ Deno.test("Action: logSet requires reps > 0", async () => {
 
   console.log("📝 Testing reps validation...");
   
-  await assertRejects(
-    async () => await workoutLog.logSet(testUser, benchPress, 185, 0),
+await assertRejects(
+    async () => await workoutLog.logSet(testUser, benchPress, 185, 0),  // Change this line
     Error,
-    "reps must be > 0"
+    "Must provide either reps or duration"  // Change this error message
   );
-  
   console.log("✅ Correctly rejected zero reps\n");
   
   await client.close();
@@ -119,6 +118,24 @@ Deno.test("Action: getLastWorkout throws when no history exists", async () => {
   );
   
   console.log("✅ Correctly threw error for missing history\n");
+  
+  await client.close();
+});
+
+// Test : Duration exercise
+Deno.test("Action: logSet accepts duration for timed exercises", async () => {
+  const [db, client] = await testDb();
+  const workoutLog = new WorkoutLogConcept(db);
+
+  console.log("📝 Testing duration logging...");
+  
+  await workoutLog.logSet(testUser, "Plank", null, null, 60);
+  const history = await workoutLog.getHistory(testUser, "Plank");
+  
+  assertEquals(history[0].duration, 60);
+  assertEquals(history[0].reps, null);
+  
+  console.log("✅ Logged timed exercise (60 seconds)\n");
   
   await client.close();
 });

@@ -10,8 +10,9 @@ interface WorkoutSetDoc {
   _id: ID;
   user: User;
   exercise: Exercise;
-  weight: number;
-  reps: number;
+  weight: number | null;
+  reps: number | null;
+  duration: number | null;
   date: Date;
 }
 
@@ -19,7 +20,12 @@ interface WorkoutSetDoc {
  * Summary structure for passing to ProgressionGuidance
  */
 export interface WorkoutSummary {
-  recentSets: Array<{ weight: number; reps: number; date: Date }>;
+  recentSets: Array<{ 
+    weight: number | null; 
+    reps: number | null; 
+    duration: number | null;  // ADD THIS
+    date: Date 
+  }>;
   sessionCount: number;
   lastWorkoutDate: Date;
 }
@@ -34,20 +40,41 @@ export default class WorkoutLogConcept {
   /**
    * Log a new set
    */
-  async logSet(user: User, exercise: Exercise, weight: number, reps: number): Promise<void> {
-    if (weight < 0 || reps <= 0) {
-      throw new Error("Weight must be >= 0 and reps must be > 0");
-    }
-
-    await this.sets.insertOne({
-      _id: freshID(),
-      user,
-      exercise,
-      weight,
-      reps,
-      date: new Date(),
-    });
+async logSet( 
+  user: User, 
+  exercise: Exercise, 
+  weight: number | null = null, 
+  reps: number | null = null, 
+  duration: number | null = null
+): Promise<void> {
+  
+  // Validation
+  if (!reps && !duration) {
+    throw new Error("Must provide either reps or duration");
   }
+  if (reps && duration) {
+    throw new Error("Cannot provide both reps and duration");
+  }
+  if (weight !== null && weight < 0) {
+    throw new Error("Weight must be >= 0");
+  }
+  if (reps !== null && reps <= 0) {
+    throw new Error("Reps must be > 0");
+  }
+  if (duration !== null && duration <= 0) {
+    throw new Error("Duration must be > 0");
+  }
+
+  await this.sets.insertOne({
+    _id: freshID(),
+    user,
+    exercise,
+    weight,
+    reps,
+    duration,
+    date: new Date(),
+  });
+}
 
   /**
    * Get most recent workout for pre-filling UI
@@ -92,24 +119,24 @@ export default class WorkoutLogConcept {
    * Get structured summary for LLM analysis
    */
   async getSummary(user: User, exercise: Exercise, weeksBack: number = 4): Promise<WorkoutSummary> {
-    const history = await this.getHistory(user, exercise, weeksBack);
+  const history = await this.getHistory(user, exercise, weeksBack);
 
-    if (history.length === 0) {
-      throw new Error("No workout history found");
-    }
-
-    // Group by date to count sessions
-    const sessionDates = new Set(history.map(s => s.date.toDateString()));
-
-    return {
-      recentSets: history.map(s => ({
-        weight: s.weight,
-        reps: s.reps,
-        date: s.date,
-      })),
-      sessionCount: sessionDates.size,
-      lastWorkoutDate: history[history.length - 1].date,
-    };
+  if (history.length === 0) {
+    throw new Error("No workout history found");
   }
+
+  const sessionDates = new Set(history.map(s => s.date.toDateString()));
+
+  return {
+    recentSets: history.map(s => ({
+      weight: s.weight,
+      reps: s.reps,
+      duration: s.duration,  // ADD THIS
+      date: s.date,
+    })),
+    sessionCount: sessionDates.size,
+    lastWorkoutDate: history[history.length - 1].date,
+  };
+}
 
 }
