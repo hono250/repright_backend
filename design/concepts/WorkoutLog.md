@@ -10,16 +10,17 @@ After user logs sets with exercise, weight, and reps across multiple workout ses
     a set of WorkoutSets with
       a user User
       an exercise Exercise
-      a weight Number
-      a reps Number
+      a weight Number (optional)
+      a reps Number (optional, null if timed, in seconds)
+      a duration Number (optional, null if not timed, in seconds)
       a date Date
 
 
 ## Actions
 
-### logSet(user: User, exercise: Exercise, weight: Number, reps: Number)
+### logSet(user: User, exercise: Exercise, weight: Number, reps: Number, duration: Number)
 
-**Requires:** weight >= 0 AND reps > 0
+**Requires:** At least one of (reps > 0) or (duration > 0) must be provided. weight, reps, and duration are optional (can be null). if weight provided, it must be >= 0. reps and duration cannot be both provided. 
 
 **Effects:** Create new WorkoutSet with current date
 

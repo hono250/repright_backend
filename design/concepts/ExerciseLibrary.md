@@ -11,6 +11,8 @@ After system seeds global exercise library, users can search and filter exercise
 a set of Exercises with
   a name String
   a hasWeight Boolean
+  a trackingType String
+    one of: "reps" | "duration"
   a isGlobal Boolean
   a targetMuscleGroup String (optional)
     one of: "Chest" | "Back" | "Shoulders" | "Arms" | "Legs" | "Core" | "Glutes" | "Full Body" | "Other"
@@ -36,8 +38,8 @@ Search exercises by name with optional filters (muscleGroup, equipment, classifi
 
 **Effects**: Return exercises matching criteria where (isGlobal=true OR createdBy=user)
 
-### addCustomExercise(user: User, name: String, hasWeight: Boolean, metadata: Object)
-**Requires**: name not empty, user authenticated
+### addCustomExercise(user: User, name: String, hasWeight: Boolean, trackingType: String, metadata: Object)
+**Requires**: name not empty, user authenticated, trackingType is "reps" or "duration"
 
 **Effects**: Create custom exercise ony visible to user, with isGlobal=false, createdBy=user, optional metadata fields
 
@@ -49,7 +51,7 @@ Search exercises by name with optional filters (muscleGroup, equipment, classifi
 
 ### updateCustomExercise(user: User, name: String, updates: Object)
 
-**Requires** : exercise exists with createdBy=user and isGlobal=false
+**Requires** : exercise exists with createdBy=user and isGlobal=false, cannot update hasWeight or trackingType (immutable after creation)
 
 **Effects**: Update custom exercise fields (hasWeight, targetMuscleGroup, equipment, etc.)
 
