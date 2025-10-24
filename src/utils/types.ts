@@ -10,3 +10,8 @@ export type ID = string & { [Brand]: true };
  * Empty record type: enforces no entries.
  */
 export type Empty = Record<PropertyKey, never>;
+
+
+// Generic concept types 
+export type User = ID;
+export type Exercise = string;

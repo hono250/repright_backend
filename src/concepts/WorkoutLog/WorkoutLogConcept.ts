@@ -1,10 +1,7 @@
 import { Collection, Db } from "npm:mongodb";
-import { ID, Empty } from "@utils/types.ts";
+import { ID, Empty,  User, Exercise } from "@utils/types.ts";
 import { freshID } from "@utils/database.ts";
 
-// Type aliases matching concept generic parameters
-type User = ID;
-type Exercise = string;
 
 /**
  * WorkoutSet document stored in MongoDB

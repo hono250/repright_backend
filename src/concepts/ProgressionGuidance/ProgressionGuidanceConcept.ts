@@ -1,10 +1,6 @@
 import { Collection, Db } from "npm:mongodb";
-import { ID } from "@utils/types.ts";
+import { ID, User, Exercise } from "@utils/types.ts";
 import { freshID } from "@utils/database.ts";
-
-// Type aliases
-type User = ID;
-type Exercise = string;
 
 /**
  * Recommendation document in MongoDB
