@@ -4,35 +4,35 @@
 Principle: Register, login, authenticate, logout ...
 [0m[38;5;245m------- output -------[0m
 📝 Testing operational principle...
-  ✓ Registered user: 0199ef3b-ff92-7b37-abaf-2a8e635452bd
+  ✓ Registered user: 019a1d38-467a-7647-829a-d81b195c54af
   ✓ Logged in with token
   ✓ Authenticated successfully
   ✓ Logged out
 ✅ Complete registration → login → logout flow
 
 [0m[38;5;245m----- output end -----[0m
-Principle: Register, login, authenticate, logout ... [0m[32mok[0m [0m[38;5;245m(924ms)[0m
+Principle: Register, login, authenticate, logout ... [0m[32mok[0m [0m[38;5;245m(991ms)[0m
 Action: register rejects duplicate username ...
 [0m[38;5;245m------- output -------[0m
 📝 Testing duplicate username rejection...
 ✅ Correctly rejected duplicate username
 
 [0m[38;5;245m----- output end -----[0m
-Action: register rejects duplicate username ... [0m[32mok[0m [0m[38;5;245m(830ms)[0m
+Action: register rejects duplicate username ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
 Action: register requires password >= 6 characters ...
 [0m[38;5;245m------- output -------[0m
 📝 Testing password length validation...
 ✅ Correctly rejected short password
 
 [0m[38;5;245m----- output end -----[0m
-Action: register requires password >= 6 characters ... [0m[32mok[0m [0m[38;5;245m(509ms)[0m
+Action: register requires password >= 6 characters ... [0m[32mok[0m [0m[38;5;245m(590ms)[0m
 Action: login rejects invalid credentials ...
 [0m[38;5;245m------- output -------[0m
 📝 Testing invalid credentials...
 ✅ Correctly rejected invalid credentials
 
 [0m[38;5;245m----- output end -----[0m
-Action: login rejects invalid credentials ... [0m[32mok[0m [0m[38;5;245m(841ms)[0m
+Action: login rejects invalid credentials ... [0m[32mok[0m [0m[38;5;245m(864ms)[0m
 Action: User can have multiple active sessions ...
 [0m[38;5;245m------- output -------[0m
 📝 Testing multiple sessions...
@@ -53,7 +53,7 @@ Action: logout throws error for invalid token ...
 ✅ Correctly rejected invalid logout token
 
 [0m[38;5;245m----- output end -----[0m
-Action: logout throws error for invalid token ... [0m[32mok[0m [0m[38;5;245m(642ms)[0m
+Action: logout throws error for invalid token ... [0m[32mok[0m [0m[38;5;245m(607ms)[0m
 
 [0m[32mok[0m | 7 passed | 0 failed [0m[38;5;245m(6s)[0m
 
