@@ -1,5 +1,5 @@
 import { Collection, Db } from "npm:mongodb";
-import { ID, User, Exercise } from "@utils/types.ts";
+import { ID, User, Exercise, Empty } from "@utils/types.ts";
 import { freshID } from "@utils/database.ts";
 
 interface TargetSet {
@@ -34,7 +34,13 @@ export default class WorkoutTemplateConcept {
   /**
    * Create new template
    */
-  async createTemplate(user: User, name: string, exercises: TemplateExercise[]): Promise<void> {
+  async createTemplate(params: {
+    user: User;
+    name: string;
+    exercises: TemplateExercise[];
+  }): Promise<Empty> {
+    const { user, name, exercises } = params;
+    
     if (!name.trim()) {
       throw new Error("Template name required");
     }
@@ -62,35 +68,49 @@ export default class WorkoutTemplateConcept {
       exercises,
       lastPerformed: null,
     });
+
+    return {} as Empty;
   }
 
   /**
    * Get all templates for user
    */
-  async getTemplates(user: User): Promise<TemplateDoc[]> {
-    return await this.templates
+  async getTemplates(params: { user: User }): Promise<{ templates: TemplateDoc[] }> {
+    const { user } = params;
+    
+    const templates = await this.templates
       .find({ user })
       .sort({ lastPerformed: -1 }) // Most recent first, nulls last
       .toArray();
+
+    return { templates };
   }
 
   /**
    * Get specific template
    */
-  async getTemplate(user: User, name: string): Promise<TemplateDoc> {
+  async getTemplate(params: { user: User; name: string }): Promise<{ template: TemplateDoc }> {
+    const { user, name } = params;
+    
     const template = await this.templates.findOne({ user, name });
 
     if (!template) {
       throw new Error("Template not found");
     }
 
-    return template;
+    return { template };
   }
 
   /**
    * Update template exercises/sets
    */
-  async updateTemplate(user: User, name: string, exercises: TemplateExercise[]): Promise<void> {
+  async updateTemplate(params: {
+    user: User;
+    name: string;
+    exercises: TemplateExercise[];
+  }): Promise<Empty> {
+    const { user, name, exercises } = params;
+    
     if (exercises.length === 0) {
       throw new Error("Template must have at least one exercise");
     }
@@ -115,23 +135,31 @@ export default class WorkoutTemplateConcept {
     if (result.matchedCount === 0) {
       throw new Error("Template not found");
     }
+
+    return {} as Empty;
   }
 
   /**
    * Delete template
    */
-  async deleteTemplate(user: User, name: string): Promise<void> {
+  async deleteTemplate(params: { user: User; name: string }): Promise<Empty> {
+    const { user, name } = params;
+    
     const result = await this.templates.deleteOne({ user, name });
 
     if (result.deletedCount === 0) {
       throw new Error("Template not found");
     }
+
+    return {} as Empty;
   }
 
   /**
    * Mark template as used
    */
-  async markTemplateUsed(user: User, name: string, date: Date): Promise<void> {
+  async markTemplateUsed(params: { user: User; name: string; date: Date }): Promise<Empty> {
+    const { user, name, date } = params;
+    
     const result = await this.templates.updateOne(
       { user, name },
       { $set: { lastPerformed: date } }
@@ -140,5 +168,7 @@ export default class WorkoutTemplateConcept {
     if (result.matchedCount === 0) {
       throw new Error("Template not found");
     }
+
+    return {} as Empty;
   }
 }

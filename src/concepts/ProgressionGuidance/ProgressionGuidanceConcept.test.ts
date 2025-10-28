@@ -3,6 +3,16 @@ import { testDb } from "@utils/database.ts";
 import { ID } from "@utils/types.ts";
 import ProgressionGuidanceConcept, { WorkoutSummary, LLM } from "./ProgressionGuidanceConcept.ts";
 
+// Database test helper
+function dbTest(name: string, fn: () => Promise<void>) {
+  Deno.test({
+    name,
+    sanitizeResources: false,
+    sanitizeOps: false,
+    fn,
+  });
+}
+
 const testUser = "user:testUser123" as ID;
 const benchPress = "Bench Press";
 
@@ -33,7 +43,7 @@ function createSummary(sets: Array<{ weight: number; reps: number; daysAgo: numb
 }
 
 // Test 1: Operational Principle
-Deno.test("Principle: Generate recommendation, user accepts it later", async () => {
+dbTest("Principle: Generate recommendation, user accepts it later", async () => {
   const [db, client] = await testDb();
   const guidance = new ProgressionGuidanceConcept(db);
 
@@ -56,20 +66,29 @@ Deno.test("Principle: Generate recommendation, user accepts it later", async () 
   });
 
   // Generate recommendation
-  await guidance.generateRecommendationLLM(testUser, benchPress, summary, mockLLM);
+  await guidance.generateRecommendationLLM({ 
+    user: testUser, 
+    exercise: benchPress, 
+    workoutSummary: summary, 
+    llm: mockLLM 
+  });
   
   // Get recommendation
-  const rec = await guidance.getRecommendation(testUser, benchPress);
+  const { recommendation: rec } = await guidance.getRecommendation({ user: testUser, exercise: benchPress });
   assertEquals(rec?.status, "pending");
   assertEquals(rec?.suggestedWeight, 175);
   
   // Accept it
-  const accepted = await guidance.acceptRecommendation(testUser, benchPress, rec!.createdAt);
+  const accepted = await guidance.acceptRecommendation({ 
+    user: testUser, 
+    exercise: benchPress, 
+    createdAt: rec!.createdAt 
+  });
   assertEquals(accepted.suggestedWeight, 175);
   assertEquals(accepted.suggestedReps, 5);
   
   // Verify status changed
-  const updated = await guidance.getRecommendation(testUser, benchPress);
+  const { recommendation: updated } = await guidance.getRecommendation({ user: testUser, exercise: benchPress });
   assertEquals(updated?.status, "accepted");
   
   console.log("✅ Generated, retrieved, and accepted recommendation\n");
@@ -78,7 +97,7 @@ Deno.test("Principle: Generate recommendation, user accepts it later", async () 
 });
 
 // Test 2: Dismiss recommendation
-Deno.test("Action: dismissRecommendation updates status", async () => {
+dbTest("Action: dismissRecommendation updates status", async () => {
   const [db, client] = await testDb();
   const guidance = new ProgressionGuidanceConcept(db);
 
@@ -98,12 +117,21 @@ Deno.test("Action: dismissRecommendation updates status", async () => {
     interventionStrategy: "progress"
   });
 
-  await guidance.generateRecommendationLLM(testUser, "Squat", summary, mockLLM);
-  const rec = await guidance.getRecommendation(testUser, "Squat");
+  await guidance.generateRecommendationLLM({ 
+    user: testUser, 
+    exercise: "Squat", 
+    workoutSummary: summary, 
+    llm: mockLLM 
+  });
+  const { recommendation: rec } = await guidance.getRecommendation({ user: testUser, exercise: "Squat" });
   
-  await guidance.dismissRecommendation(testUser, "Squat", rec!.createdAt);
+  await guidance.dismissRecommendation({ 
+    user: testUser, 
+    exercise: "Squat", 
+    createdAt: rec!.createdAt 
+  });
   
-  const dismissed = await guidance.getRecommendation(testUser, "Squat");
+  const { recommendation: dismissed } = await guidance.getRecommendation({ user: testUser, exercise: "Squat" });
   assertEquals(dismissed?.status, "dismissed");
   
   console.log("✅ Successfully dismissed recommendation\n");
@@ -112,7 +140,7 @@ Deno.test("Action: dismissRecommendation updates status", async () => {
 });
 
 // Test 3: Recommendation history
-Deno.test("Action: getRecommendationHistory returns all recommendations", async () => {
+dbTest("Action: getRecommendationHistory returns all recommendations", async () => {
   const [db, client] = await testDb();
   const guidance = new ProgressionGuidanceConcept(db);
 
@@ -133,11 +161,29 @@ Deno.test("Action: getRecommendationHistory returns all recommendations", async 
   });
 
   // Generate 3 recommendations
-  await guidance.generateRecommendationLLM(testUser, "Deadlift", summary, mockLLM);
-  await guidance.generateRecommendationLLM(testUser, "Deadlift", summary, mockLLM);
-  await guidance.generateRecommendationLLM(testUser, "Deadlift", summary, mockLLM);
+  await guidance.generateRecommendationLLM({ 
+    user: testUser, 
+    exercise: "Deadlift", 
+    workoutSummary: summary, 
+    llm: mockLLM 
+  });
+  await guidance.generateRecommendationLLM({ 
+    user: testUser, 
+    exercise: "Deadlift", 
+    workoutSummary: summary, 
+    llm: mockLLM 
+  });
+  await guidance.generateRecommendationLLM({ 
+    user: testUser, 
+    exercise: "Deadlift", 
+    workoutSummary: summary, 
+    llm: mockLLM 
+  });
   
-  const history = await guidance.getRecommendationHistory(testUser, "Deadlift");
+  const { recommendations: history } = await guidance.getRecommendationHistory({ 
+    user: testUser, 
+    exercise: "Deadlift" 
+  });
   assertEquals(history.length, 3);
   
   console.log(`✅ Retrieved ${history.length} recommendations from history\n`);
@@ -146,7 +192,7 @@ Deno.test("Action: getRecommendationHistory returns all recommendations", async 
 });
 
 // Test 4: Insufficient data validation
-Deno.test("Action: generateRecommendationLLM requires 3+ sets", async () => {
+dbTest("Action: generateRecommendationLLM requires 3+ sets", async () => {
   const [db, client] = await testDb();
   const guidance = new ProgressionGuidanceConcept(db);
 
@@ -166,7 +212,12 @@ Deno.test("Action: generateRecommendationLLM requires 3+ sets", async () => {
   });
 
   await assertRejects(
-    async () => await guidance.generateRecommendationLLM(testUser, benchPress, summary, mockLLM),
+    async () => await guidance.generateRecommendationLLM({ 
+      user: testUser, 
+      exercise: benchPress, 
+      workoutSummary: summary, 
+      llm: mockLLM 
+    }),
     Error,
     "Need at least 3 recent sets"
   );
@@ -177,7 +228,7 @@ Deno.test("Action: generateRecommendationLLM requires 3+ sets", async () => {
 });
 
 // Test 5: Validator - extreme weight change
-Deno.test("Validator: Rejects extreme weight suggestions (>20% change)", async () => {
+dbTest("Validator: Rejects extreme weight suggestions (>20% change)", async () => {
   const [db, client] = await testDb();
   const guidance = new ProgressionGuidanceConcept(db);
 
@@ -198,7 +249,12 @@ Deno.test("Validator: Rejects extreme weight suggestions (>20% change)", async (
   });
 
   await assertRejects(
-    async () => await guidance.generateRecommendationLLM(testUser, benchPress, summary, mockLLM),
+    async () => await guidance.generateRecommendationLLM({ 
+      user: testUser, 
+      exercise: benchPress, 
+      workoutSummary: summary, 
+      llm: mockLLM 
+    }),
     Error,
     "Max allowed: 20%"
   );
@@ -209,7 +265,7 @@ Deno.test("Validator: Rejects extreme weight suggestions (>20% change)", async (
 });
 
 // Test 6: Validator - invalid rep range
-Deno.test("Validator: Rejects invalid rep ranges", async () => {
+dbTest("Validator: Rejects invalid rep ranges", async () => {
   const [db, client] = await testDb();
   const guidance = new ProgressionGuidanceConcept(db);
 
@@ -230,7 +286,12 @@ Deno.test("Validator: Rejects invalid rep ranges", async () => {
   });
 
   await assertRejects(
-    async () => await guidance.generateRecommendationLLM(testUser, benchPress, summary, mockLLM),
+    async () => await guidance.generateRecommendationLLM({ 
+      user: testUser, 
+      exercise: benchPress, 
+      workoutSummary: summary, 
+      llm: mockLLM 
+    }),
     Error,
     "outside reasonable range"
   );
@@ -241,7 +302,7 @@ Deno.test("Validator: Rejects invalid rep ranges", async () => {
 });
 
 // Test 7: Validator - plateau-strategy contradiction
-Deno.test("Validator: Ensures plateau + progress don't coexist", async () => {
+dbTest("Validator: Ensures plateau + progress don't coexist", async () => {
   const [db, client] = await testDb();
   const guidance = new ProgressionGuidanceConcept(db);
 
@@ -262,7 +323,12 @@ Deno.test("Validator: Ensures plateau + progress don't coexist", async () => {
   });
 
   await assertRejects(
-    async () => await guidance.generateRecommendationLLM(testUser, benchPress, summary, mockLLM),
+    async () => await guidance.generateRecommendationLLM({ 
+      user: testUser, 
+      exercise: benchPress, 
+      workoutSummary: summary, 
+      llm: mockLLM 
+    }),
     Error,
     "not deload/maintain/variation"
   );

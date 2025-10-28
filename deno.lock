@@ -5,6 +5,7 @@
     "jsr:@felix/argon2@*": "3.0.2",
     "jsr:@felix/argon2@3.0.2": "3.0.2",
     "jsr:@felix/argon2@^3.0.2": "3.0.2",
+    "jsr:@hono/hono@*": "4.10.2",
     "jsr:@std/assert@*": "1.0.15",
     "jsr:@std/assert@^1.0.15": "1.0.15",
     "jsr:@std/cli@*": "1.0.22",
@@ -17,7 +18,7 @@
     "jsr:@std/internal@^1.0.12": "1.0.12",
     "jsr:@std/internal@^1.0.5": "1.0.12",
     "jsr:@std/internal@^1.0.9": "1.0.12",
-    "jsr:@std/path@*": "1.0.8",
+    "jsr:@std/path@*": "1.1.2",
     "jsr:@std/path@1": "1.1.2",
     "jsr:@std/path@^1.1.1": "1.1.2",
     "jsr:@std/testing@*": "1.0.16",
@@ -48,6 +49,9 @@
       "dependencies": [
         "jsr:@denosaurs/plug"
       ]
+    },
+    "@hono/hono@4.10.2": {
+      "integrity": "9cdb32df3b1f8eba43b197035a90e0c3c543ddf99f75cebfa31a2414bc5633f8"
     },
     "@std/assert@1.0.7": {
       "integrity": "64ce9fac879e0b9f3042a89b3c3f8ccfc9c984391af19e2087513a79d73e28c3",

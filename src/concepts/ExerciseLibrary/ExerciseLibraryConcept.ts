@@ -1,5 +1,5 @@
 import { Collection, Db } from "npm:mongodb";
-import { ID, User } from "@utils/types.ts";
+import { ID, User, Empty } from "@utils/types.ts";
 import { freshID } from "@utils/database.ts";
 
 
@@ -44,7 +44,9 @@ export default class ExerciseLibraryConcept {
   /**
    * Search exercises with filters
    */
-  async searchExercises(user: User, query: string, filters: SearchFilters = {}): Promise<ExerciseDoc[]> {
+  async searchExercises(params: { user: User; query: string; filters?: SearchFilters }): Promise<{ exercises: ExerciseDoc[] }> {
+    const { user, query, filters = {} } = params;
+    
     if (!query && Object.keys(filters).length === 0) {
       throw new Error("Query or at least one filter required");
     }
@@ -70,19 +72,22 @@ export default class ExerciseLibraryConcept {
       searchQuery.forceType = filters.forceType;
     }
 
-    return await this.exercises.find(searchQuery).toArray();
+    const exercises = await this.exercises.find(searchQuery).toArray();
+    return { exercises };
   }
 
   /**
    * Add custom exercise
    */
-  async addCustomExercise(
-    user: User,
-    name: string,
-    hasWeight: boolean,
-    trackingType: TrackingType, 
-    metadata: Partial<ExerciseDoc> = {}
-  ): Promise<void> {
+  async addCustomExercise(params: {
+    user: User;
+    name: string;
+    hasWeight: boolean;
+    trackingType: TrackingType;
+    metadata?: Partial<ExerciseDoc>;
+  }): Promise<Empty> {
+    const { user, name, hasWeight, trackingType, metadata = {} } = params;
+    
     if (!name.trim()) {
       throw new Error("Exercise name required");
     }
@@ -96,12 +101,16 @@ export default class ExerciseLibraryConcept {
       createdBy: user,
       ...metadata,
     });
+
+    return {} as Empty;
   }
 
   /**
    * Get specific exercise
    */
-  async getExercise(user: User, name: string): Promise<ExerciseDoc> {
+  async getExercise(params: { user: User; name: string }): Promise<{ exercise: ExerciseDoc }> {
+    const { user, name } = params;
+    
     const exercise = await this.exercises.findOne({
       name,
       $or: [{ isGlobal: true }, { createdBy: user }],
@@ -111,13 +120,15 @@ export default class ExerciseLibraryConcept {
       throw new Error("Exercise not found");
     }
 
-    return exercise;
+    return { exercise };
   }
 
   /**
    * Update custom exercise
    */
-  async updateCustomExercise(user: User, name: string, updates: Partial<ExerciseDoc>): Promise<void> {
+  async updateCustomExercise(params: { user: User; name: string; updates: Partial<ExerciseDoc> }): Promise<Empty> {
+    const { user, name, updates } = params;
+    
     // Remove immutable fields from updates
     const { hasWeight, trackingType, ...allowedUpdates } = updates;
     
@@ -133,12 +144,16 @@ export default class ExerciseLibraryConcept {
     if (result.matchedCount === 0) {
       throw new Error("Custom exercise not found");
     }
+
+    return {} as Empty;
   }
 
   /**
    * Delete custom exercise
    */
-  async deleteCustomExercise(user: User, name: string): Promise<void> {
+  async deleteCustomExercise(params: { user: User; name: string }): Promise<Empty> {
+    const { user, name } = params;
+    
     const result = await this.exercises.deleteOne({
       name,
       createdBy: user,
@@ -148,12 +163,16 @@ export default class ExerciseLibraryConcept {
     if (result.deletedCount === 0) {
       throw new Error("Custom exercise not found");
     }
+
+    return {} as Empty;
   }
 
   /**
    * Seed global exercises (one-time)
    */
-  async seedGlobalExercises(exerciseData: Partial<ExerciseDoc>[]): Promise<void> {
+  async seedGlobalExercises(params: { exerciseData: Partial<ExerciseDoc>[] }): Promise<Empty> {
+    const { exerciseData } = params;
+    
     const count = await this.exercises.countDocuments({ isGlobal: true });
     if (count > 0) {
       throw new Error("Global exercises already seeded");
@@ -167,5 +186,7 @@ export default class ExerciseLibraryConcept {
     }));
 
     await this.exercises.insertMany(exercises as ExerciseDoc[]);
+
+    return {} as Empty;
   }
 }

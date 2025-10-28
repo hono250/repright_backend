@@ -1,5 +1,6 @@
 import { Hono } from "jsr:@hono/hono";
 import { getDb } from "@utils/database.ts";
+import { cors } from "jsr:@hono/hono/cors";
 import { walk } from "jsr:@std/fs";
 import { parseArgs } from "jsr:@std/cli/parse-args";
 import { toFileUrl } from "jsr:@std/path/to-file-url";
@@ -23,6 +24,9 @@ const CONCEPTS_DIR = "src/concepts";
 async function main() {
   const [db] = await getDb();
   const app = new Hono();
+
+  // Add CORS 
+  app.use("*", cors());
 
   app.get("/", (c) => c.text("Concept Server is running."));
 
@@ -80,7 +84,9 @@ async function main() {
             return c.json(result);
           } catch (e) {
             console.error(`Error in ${conceptName}.${methodName}:`, e);
-            return c.json({ error: "An internal server error occurred." }, 500);
+            // Return the actual error message to the client
+            const errorMessage = e instanceof Error ? e.message : "An internal server error occurred."
+            return c.json({ error: errorMessage }, 400);
           }
         });
         console.log(`  - Endpoint: POST ${route}`);

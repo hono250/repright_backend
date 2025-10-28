@@ -3,22 +3,32 @@ import { testDb } from "@utils/database.ts";
 import { ID } from "@utils/types.ts";
 import WorkoutLogConcept from "./WorkoutLogConcept.ts";
 
+// Database test helper
+function dbTest(name: string, fn: () => Promise<void>) {
+  Deno.test({
+    name,
+    sanitizeResources: false,
+    sanitizeOps: false,
+    fn,
+  });
+}
+
 const testUser = "user:testUser123" as ID;
 const benchPress = "Bench Press";
 const squat = "Squat";
 
 // Test 1: Operational Principle
-Deno.test("Principle: Log sets and retrieve workout history", async () => {
+dbTest("Principle: Log sets and retrieve workout history", async () => {
   const [db, client] = await testDb();
   const workoutLog = new WorkoutLogConcept(db);
 
   console.log("📝 Testing operational principle...");
   
-  await workoutLog.logSet(testUser, benchPress, 185, 5);
-  await workoutLog.logSet(testUser, benchPress, 185, 5);
-  await workoutLog.logSet(testUser, benchPress, 185, 4);
+  await workoutLog.logSet({ user: testUser, exercise: benchPress, weight: 185, reps: 5 });
+  await workoutLog.logSet({ user: testUser, exercise: benchPress, weight: 185, reps: 5 });
+  await workoutLog.logSet({ user: testUser, exercise: benchPress, weight: 185, reps: 4 });
   
-  const history = await workoutLog.getHistory(testUser, benchPress);
+  const { history } = await workoutLog.getHistory({ user: testUser, exercise: benchPress });
   assertEquals(history.length, 3, "Should have 3 sets logged");
   assertEquals(history[0].weight, 185, "Weight should be 185");
   
@@ -28,16 +38,16 @@ Deno.test("Principle: Log sets and retrieve workout history", async () => {
 });
 
 // Test 2: getLastWorkout
-Deno.test("Action: getLastWorkout returns most recent set", async () => {
+dbTest("Action: getLastWorkout returns most recent set", async () => {
   const [db, client] = await testDb();
   const workoutLog = new WorkoutLogConcept(db);
 
   console.log("📝 Testing getLastWorkout...");
   
-  await workoutLog.logSet(testUser, squat, 225, 5);
-  await workoutLog.logSet(testUser, squat, 230, 5);
+  await workoutLog.logSet({ user: testUser, exercise: squat, weight: 225, reps: 5 });
+  await workoutLog.logSet({ user: testUser, exercise: squat, weight: 230, reps: 5 });
   
-  const last = await workoutLog.getLastWorkout(testUser, squat);
+  const last = await workoutLog.getLastWorkout({ user: testUser, exercise: squat });
   assertEquals(last.weight, 230, "Should return most recent weight");
   assertEquals(last.reps, 5);
   
@@ -47,16 +57,16 @@ Deno.test("Action: getLastWorkout returns most recent set", async () => {
 });
 
 // Test 3: getSummary structure
-Deno.test("Action: getSummary provides structured data", async () => {
+dbTest("Action: getSummary provides structured data", async () => {
   const [db, client] = await testDb();
   const workoutLog = new WorkoutLogConcept(db);
 
   console.log("📝 Testing getSummary...");
   
-  await workoutLog.logSet(testUser, benchPress, 185, 5);
-  await workoutLog.logSet(testUser, benchPress, 185, 5);
+  await workoutLog.logSet({ user: testUser, exercise: benchPress, weight: 185, reps: 5 });
+  await workoutLog.logSet({ user: testUser, exercise: benchPress, weight: 185, reps: 5 });
   
-  const summary = await workoutLog.getSummary(testUser, benchPress);
+  const { summary } = await workoutLog.getSummary({ user: testUser, exercise: benchPress });
   
   assertEquals(typeof summary.sessionCount, "number");
   assertEquals(Array.isArray(summary.recentSets), true);
@@ -67,15 +77,15 @@ Deno.test("Action: getSummary provides structured data", async () => {
   await client.close();
 });
 
-// Test 5a: Validation - negative reps
-Deno.test("Action: logSet requires weight >= 0", async () => {
+// Test 5a: Validation - negative weight
+dbTest("Action: logSet requires weight >= 0", async () => {
   const [db, client] = await testDb();
   const workoutLog = new WorkoutLogConcept(db);
 
   console.log("📝 Testing weight validation...");
   
   await assertRejects(
-    async () => await workoutLog.logSet(testUser, benchPress, -10, 5),
+    async () => await workoutLog.logSet({ user: testUser, exercise: benchPress, weight: -10, reps: 5 }),
     Error,
     "Weight must be >= 0"
   );
@@ -86,24 +96,25 @@ Deno.test("Action: logSet requires weight >= 0", async () => {
 });
 
 // Test 5b: Validation - zero reps
-Deno.test("Action: logSet requires reps > 0", async () => {
+dbTest("Action: logSet requires reps > 0", async () => {
   const [db, client] = await testDb();
   const workoutLog = new WorkoutLogConcept(db);
 
   console.log("📝 Testing reps validation...");
   
-await assertRejects(
-    async () => await workoutLog.logSet(testUser, benchPress, 185, 0),  // Change this line
+  await assertRejects(
+    async () => await workoutLog.logSet({ user: testUser, exercise: benchPress, weight: 185, reps: 0 }),
     Error,
-    "Must provide either reps or duration"  // Change this error message
+    "Must provide either reps or duration"
   );
+  
   console.log("✅ Correctly rejected zero reps\n");
   
   await client.close();
 });
 
 // Test 6: Error - no history
-Deno.test("Action: getLastWorkout throws when no history exists", async () => {
+dbTest("Action: getLastWorkout throws when no history exists", async () => {
   const [db, client] = await testDb();
   const workoutLog = new WorkoutLogConcept(db);
 
@@ -112,7 +123,7 @@ Deno.test("Action: getLastWorkout throws when no history exists", async () => {
   const newUser = "user:newUser456" as ID;
   
   await assertRejects(
-    async () => await workoutLog.getLastWorkout(newUser, "Nonexistent Exercise"),
+    async () => await workoutLog.getLastWorkout({ user: newUser, exercise: "Nonexistent Exercise" }),
     Error,
     "No workout history found"
   );
@@ -122,15 +133,15 @@ Deno.test("Action: getLastWorkout throws when no history exists", async () => {
   await client.close();
 });
 
-// Test : Duration exercise
-Deno.test("Action: logSet accepts duration for timed exercises", async () => {
+// Test: Duration exercise
+dbTest("Action: logSet accepts duration for timed exercises", async () => {
   const [db, client] = await testDb();
   const workoutLog = new WorkoutLogConcept(db);
 
   console.log("📝 Testing duration logging...");
   
-  await workoutLog.logSet(testUser, "Plank", null, null, 60);
-  const history = await workoutLog.getHistory(testUser, "Plank");
+  await workoutLog.logSet({ user: testUser, exercise: "Plank", duration: 60 });
+  const { history } = await workoutLog.getHistory({ user: testUser, exercise: "Plank" });
   
   assertEquals(history[0].duration, 60);
   assertEquals(history[0].reps, null);

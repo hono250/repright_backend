@@ -1,5 +1,5 @@
 import { Collection, Db } from "npm:mongodb";
-import { ID } from "@utils/types.ts";
+import { ID, Empty } from "@utils/types.ts";
 import { freshID } from "@utils/database.ts";
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 
@@ -33,7 +33,8 @@ export default class UserAuthenticationConcept {
   /**
    * Register new user
    */
-  async register(username: string, password: string): Promise<ID> {
+  async register(params: {username: string, password: string}): Promise<{ userId: ID }> {
+    const {username,password} = params;
     const existing = await this.users.findOne({ username });
     if (existing) {
       throw new Error("Username already taken");
@@ -52,14 +53,15 @@ export default class UserAuthenticationConcept {
       passwordHash,
     });
 
-    return userId;
+    return {userId};
   }
 
 
   /**
    * Login - creates session and returns token
    */
-  async login(username: string, password: string): Promise<string> {
+  async login(params: {username: string, password: string}): Promise<{ token: string }> {
+    const { username, password } = params;
     const user = await this.users.findOne({ username });
     if (!user) {
       throw new Error("Invalid credentials");
@@ -77,35 +79,39 @@ export default class UserAuthenticationConcept {
       token,
     });
 
-    return token;
+    return {token};
   }
 
   /**
    * Authenticate token - returns user ID
    */
-  async authenticate(token: string): Promise<ID> {
+  async authenticate(params: { token: string }): Promise<{ userId: ID }> {
+    const { token } = params;
     const session = await this.sessions.findOne({ token });
     if (!session) {
       throw new Error("Invalid or expired session");
     }
 
-    return session.user;
+    return { userId: session.user };
   }
 
   /**
    * Logout - removes session
    */
-  async logout(token: string): Promise<void> {
+  async logout(params: {token: string}): Promise<Empty> {
+    const { token } = params;
     const result = await this.sessions.deleteOne({ token });
     if (result.deletedCount === 0) {
       throw new Error("Session not found");
     }
+    return {} as Empty;
   }
 
   /**
    * Delete account - removes user and all sessions
    */
-  async deleteAccount(userId: ID): Promise<void> {
+  async deleteAccount(params: { userId: ID }): Promise<Empty> {
+    const { userId } = params;
     const user = await this.users.findOne({ _id: userId });
     if (!user) {
       throw new Error("User not found");
@@ -113,5 +119,7 @@ export default class UserAuthenticationConcept {
 
     await this.users.deleteOne({ _id: userId });
     await this.sessions.deleteMany({ user: userId });
+
+    return {} as Empty; 
   }
 }

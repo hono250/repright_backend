@@ -1,5 +1,5 @@
 import { Collection, Db } from "npm:mongodb";
-import { ID, User, Exercise } from "@utils/types.ts";
+import { ID, User, Exercise, Empty } from "@utils/types.ts";
 import { freshID } from "@utils/database.ts";
 
 /**
@@ -44,12 +44,14 @@ export default class ProgressionGuidanceConcept {
   /**
    * Generate AI-powered recommendation
    */
-  async generateRecommendationLLM(
-    user: User,
-    exercise: Exercise,
-    workoutSummary: WorkoutSummary,
-    llm: LLM
-  ): Promise<void> {
+  async generateRecommendationLLM(params: {
+    user: User;
+    exercise: Exercise;
+    workoutSummary: WorkoutSummary;
+    llm: LLM;
+  }): Promise<Empty> {
+    const { user, exercise, workoutSummary, llm } = params;
+    
     if (workoutSummary.recentSets.length < 3) {
       throw new Error("Need at least 3 recent sets to generate recommendation");
     }
@@ -71,25 +73,35 @@ export default class ProgressionGuidanceConcept {
       status: "pending",
       createdAt: new Date(),
     });
+
+    return {} as Empty;
   }
 
   /**
    * Get most recent recommendation for exercise
    */
-  async getRecommendation(user: User, exercise: Exercise): Promise<RecommendationDoc | null> {
+  async getRecommendation(params: { user: User; exercise: Exercise }): Promise<{ recommendation: RecommendationDoc | null }> {
+    const { user, exercise } = params;
+    
     const rec = await this.recommendations
       .find({ user, exercise })
       .sort({ createdAt: -1 })
       .limit(1)
       .toArray();
 
-    return rec.length > 0 ? rec[0] : null;
+    return { recommendation: rec.length > 0 ? rec[0] : null };
   }
 
   /**
    * Accept recommendation - returns values to use in workout
    */
-  async acceptRecommendation(user: User, exercise: Exercise, createdAt: Date): Promise<{ suggestedWeight: number; suggestedReps: number }> {
+  async acceptRecommendation(params: { 
+    user: User; 
+    exercise: Exercise; 
+    createdAt: Date 
+  }): Promise<{ suggestedWeight: number; suggestedReps: number }> {
+    const { user, exercise, createdAt } = params;
+    
     const rec = await this.recommendations.findOne({ user, exercise, createdAt, status: "pending" });
     
     if (!rec) {
@@ -110,7 +122,13 @@ export default class ProgressionGuidanceConcept {
   /**
    * Dismiss recommendation
    */
-  async dismissRecommendation(user: User, exercise: Exercise, createdAt: Date): Promise<void> {
+  async dismissRecommendation(params: { 
+    user: User; 
+    exercise: Exercise; 
+    createdAt: Date 
+  }): Promise<Empty> {
+    const { user, exercise, createdAt } = params;
+    
     const result = await this.recommendations.updateOne(
       { user, exercise, createdAt, status: "pending" },
       { $set: { status: "dismissed" } }
@@ -119,16 +137,25 @@ export default class ProgressionGuidanceConcept {
     if (result.matchedCount === 0) {
       throw new Error("Recommendation not found or already processed");
     }
+
+    return {} as Empty;
   }
 
   /**
    * Get all recommendations for browsing history
    */
-  async getRecommendationHistory(user: User, exercise: Exercise): Promise<RecommendationDoc[]> {
-    return await this.recommendations
+  async getRecommendationHistory(params: { 
+    user: User; 
+    exercise: Exercise 
+  }): Promise<{ recommendations: RecommendationDoc[] }> {
+    const { user, exercise } = params;
+    
+    const recommendations = await this.recommendations
       .find({ user, exercise })
       .sort({ createdAt: -1 })
       .toArray();
+
+    return { recommendations };
   }
 
   /**
@@ -203,4 +230,3 @@ Return ONLY valid JSON:
     return parsed;
   }
 }
-

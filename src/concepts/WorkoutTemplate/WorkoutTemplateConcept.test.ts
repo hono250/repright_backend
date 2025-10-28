@@ -3,10 +3,20 @@ import { testDb } from "@utils/database.ts";
 import { User } from "@utils/types.ts";
 import WorkoutTemplateConcept, { TemplateExercise } from "./WorkoutTemplateConcept.ts";
 
+// Helper for database tests
+function dbTest(name: string, fn: () => Promise<void>) {
+  Deno.test({
+    name,
+    sanitizeResources: false,
+    sanitizeOps: false,
+    fn,
+  });
+}
+
 const testUser = "user:testUser123" as User;
 
 // Test 1: Create template
-Deno.test("Action: createTemplate creates workout template", async () => {
+dbTest("Action: createTemplate creates workout template", async () => {
   const [db, client] = await testDb();
   const templates = new WorkoutTemplateConcept(db);
 
@@ -29,9 +39,9 @@ Deno.test("Action: createTemplate creates workout template", async () => {
     },
   ];
 
-  await templates.createTemplate(testUser, "Push Day", exercises);
+  await templates.createTemplate({ user: testUser, name: "Push Day", exercises });
 
-  const template = await templates.getTemplate(testUser, "Push Day");
+  const { template } = await templates.getTemplate({ user: testUser, name: "Push Day" });
   assertEquals(template.name, "Push Day");
   assertEquals(template.exercises.length, 2);
   assertEquals(template.lastPerformed, null);
@@ -42,7 +52,7 @@ Deno.test("Action: createTemplate creates workout template", async () => {
 });
 
 // Test 2: Create template with timed exercise
-Deno.test("Action: createTemplate supports timed exercises", async () => {
+dbTest("Action: createTemplate supports timed exercises", async () => {
   const [db, client] = await testDb();
   const templates = new WorkoutTemplateConcept(db);
 
@@ -58,9 +68,9 @@ Deno.test("Action: createTemplate supports timed exercises", async () => {
     },
   ];
 
-  await templates.createTemplate(testUser, "Core Workout", exercises);
+  await templates.createTemplate({ user: testUser, name: "Core Workout", exercises });
 
-  const template = await templates.getTemplate(testUser, "Core Workout");
+  const { template } = await templates.getTemplate({ user: testUser, name: "Core Workout" });
   assertEquals(template.exercises[0].sets[0].targetDuration, 60);
   assertEquals(template.exercises[0].sets[0].targetReps, null);
 
@@ -70,7 +80,7 @@ Deno.test("Action: createTemplate supports timed exercises", async () => {
 });
 
 // Test 3: Get all templates sorted by lastPerformed
-Deno.test("Action: getTemplates returns sorted list", async () => {
+dbTest("Action: getTemplates returns sorted list", async () => {
   const [db, client] = await testDb();
   const templates = new WorkoutTemplateConcept(db);
 
@@ -80,13 +90,13 @@ Deno.test("Action: getTemplates returns sorted list", async () => {
     { exercise: "Squat", sets: [{ targetWeight: 225, targetReps: 5, targetDuration: null, restTimer: 180 }] },
   ];
 
-  await templates.createTemplate(testUser, "Leg Day", ex1);
-  await templates.createTemplate(testUser, "Arm Day", ex1);
+  await templates.createTemplate({ user: testUser, name: "Leg Day", exercises: ex1 });
+  await templates.createTemplate({ user: testUser, name: "Arm Day", exercises: ex1 });
 
   // Mark one as used
-  await templates.markTemplateUsed(testUser, "Leg Day", new Date());
+  await templates.markTemplateUsed({ user: testUser, name: "Leg Day", date: new Date() });
 
-  const allTemplates = await templates.getTemplates(testUser);
+  const { templates: allTemplates } = await templates.getTemplates({ user: testUser });
   assertEquals(allTemplates.length, 2);
   assertEquals(allTemplates[0].name, "Leg Day"); // Most recent first
 
@@ -96,7 +106,7 @@ Deno.test("Action: getTemplates returns sorted list", async () => {
 });
 
 // Test 4: Update template
-Deno.test("Action: updateTemplate modifies exercises", async () => {
+dbTest("Action: updateTemplate modifies exercises", async () => {
   const [db, client] = await testDb();
   const templates = new WorkoutTemplateConcept(db);
 
@@ -106,16 +116,16 @@ Deno.test("Action: updateTemplate modifies exercises", async () => {
     { exercise: "Bench", sets: [{ targetWeight: 185, targetReps: 5, targetDuration: null, restTimer: 180 }] },
   ];
 
-  await templates.createTemplate(testUser, "Test Template", original);
+  await templates.createTemplate({ user: testUser, name: "Test Template", exercises: original });
 
   const updated: TemplateExercise[] = [
     { exercise: "Bench", sets: [{ targetWeight: 195, targetReps: 5, targetDuration: null, restTimer: 180 }] },
     { exercise: "Squat", sets: [{ targetWeight: 225, targetReps: 5, targetDuration: null, restTimer: 180 }] },
   ];
 
-  await templates.updateTemplate(testUser, "Test Template", updated);
+  await templates.updateTemplate({ user: testUser, name: "Test Template", exercises: updated });
 
-  const template = await templates.getTemplate(testUser, "Test Template");
+  const { template } = await templates.getTemplate({ user: testUser, name: "Test Template" });
   assertEquals(template.exercises.length, 2);
   assertEquals(template.exercises[0].sets[0].targetWeight, 195);
 
@@ -125,7 +135,7 @@ Deno.test("Action: updateTemplate modifies exercises", async () => {
 });
 
 // Test 5: Delete template
-Deno.test("Action: deleteTemplate removes template", async () => {
+dbTest("Action: deleteTemplate removes template", async () => {
   const [db, client] = await testDb();
   const templates = new WorkoutTemplateConcept(db);
 
@@ -135,11 +145,11 @@ Deno.test("Action: deleteTemplate removes template", async () => {
     { exercise: "Test", sets: [{ targetWeight: 100, targetReps: 10, targetDuration: null, restTimer: 90 }] },
   ];
 
-  await templates.createTemplate(testUser, "To Delete", ex);
-  await templates.deleteTemplate(testUser, "To Delete");
+  await templates.createTemplate({ user: testUser, name: "To Delete", exercises: ex });
+  await templates.deleteTemplate({ user: testUser, name: "To Delete" });
 
   await assertRejects(
-    async () => await templates.getTemplate(testUser, "To Delete"),
+    async () => await templates.getTemplate({ user: testUser, name: "To Delete" }),
     Error,
     "Template not found"
   );
@@ -150,7 +160,7 @@ Deno.test("Action: deleteTemplate removes template", async () => {
 });
 
 // Test 6: Validation - conflicting reps and duration
-Deno.test("Action: createTemplate rejects reps + duration in same set", async () => {
+dbTest("Action: createTemplate rejects reps + duration in same set", async () => {
   const [db, client] = await testDb();
   const templates = new WorkoutTemplateConcept(db);
 
@@ -166,7 +176,7 @@ Deno.test("Action: createTemplate rejects reps + duration in same set", async ()
   ];
 
   await assertRejects(
-    async () => await templates.createTemplate(testUser, "Bad Template", badExercises),
+    async () => await templates.createTemplate({ user: testUser, name: "Bad Template", exercises: badExercises }),
     Error,
     "cannot have both"
   );
@@ -177,7 +187,7 @@ Deno.test("Action: createTemplate rejects reps + duration in same set", async ()
 });
 
 // Test 7: Validation - missing both reps and duration
-Deno.test("Action: createTemplate requires reps or duration", async () => {
+dbTest("Action: createTemplate requires reps or duration", async () => {
   const [db, client] = await testDb();
   const templates = new WorkoutTemplateConcept(db);
 
@@ -193,7 +203,7 @@ Deno.test("Action: createTemplate requires reps or duration", async () => {
   ];
 
   await assertRejects(
-    async () => await templates.createTemplate(testUser, "Empty Template", badExercises),
+    async () => await templates.createTemplate({ user: testUser, name: "Empty Template", exercises: badExercises }),
     Error,
     "must have targetReps or targetDuration"
   );

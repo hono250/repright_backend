@@ -3,10 +3,20 @@ import { testDb } from "@utils/database.ts";
 import { User } from "@utils/types.ts";
 import ExerciseLibraryConcept from "./ExerciseLibraryConcept.ts";
 
+// Database test helper
+function dbTest(name: string, fn: () => Promise<void>) {
+  Deno.test({
+    name,
+    sanitizeResources: false,
+    sanitizeOps: false,
+    fn,
+  });
+}
+
 const testUser = "user:testUser123" as User;
 
 // Test 1: Seed global exercises
-Deno.test("Action: seedGlobalExercises imports exercise database", async () => {
+dbTest("Action: seedGlobalExercises imports exercise database", async () => {
   const [db, client] = await testDb();
   const library = new ExerciseLibraryConcept(db);
 
@@ -31,9 +41,9 @@ Deno.test("Action: seedGlobalExercises imports exercise database", async () => {
     },
   ];
 
-  await library.seedGlobalExercises(sampleExercises);
+  await library.seedGlobalExercises({ exerciseData: sampleExercises });
 
-  const results = await library.searchExercises(testUser, "Bench", {});
+  const { exercises: results } = await library.searchExercises({ user: testUser, query: "Bench", filters: {} });
   assertEquals(results.length, 1);
   assertEquals(results[0].name, "Bench Press");
 
@@ -43,19 +53,21 @@ Deno.test("Action: seedGlobalExercises imports exercise database", async () => {
 });
 
 // Test 2: Search with filters
-Deno.test("Action: searchExercises filters by muscle group", async () => {
+dbTest("Action: searchExercises filters by muscle group", async () => {
   const [db, client] = await testDb();
   const library = new ExerciseLibraryConcept(db);
 
   console.log("📝 Testing search with filters...");
 
-  await library.seedGlobalExercises([
-    { name: "Bench Press", hasWeight: true, targetMuscleGroup: "Chest" as const },
-    { name: "Squat", hasWeight: true, targetMuscleGroup: "Legs" as const },
-    { name: "Deadlift", hasWeight: true, targetMuscleGroup: "Back" as const },
-  ]);
+  await library.seedGlobalExercises({
+    exerciseData: [
+      { name: "Bench Press", hasWeight: true, targetMuscleGroup: "Chest" as const },
+      { name: "Squat", hasWeight: true, targetMuscleGroup: "Legs" as const },
+      { name: "Deadlift", hasWeight: true, targetMuscleGroup: "Back" as const },
+    ]
+  });
 
-  const results = await library.searchExercises(testUser, "", { muscleGroup: "Legs" });
+  const { exercises: results } = await library.searchExercises({ user: testUser, query: "", filters: { muscleGroup: "Legs" } });
   assertEquals(results.length, 1);
   assertEquals(results[0].name, "Squat");
 
@@ -65,17 +77,23 @@ Deno.test("Action: searchExercises filters by muscle group", async () => {
 });
 
 // Test 3: Add custom exercise
-Deno.test("Action: addCustomExercise creates user-specific exercise", async () => {
+dbTest("Action: addCustomExercise creates user-specific exercise", async () => {
   const [db, client] = await testDb();
   const library = new ExerciseLibraryConcept(db);
 
   console.log("📝 Testing custom exercise creation...");
 
-  await library.addCustomExercise(testUser, "My Special Exercise", true, "reps", {
-    targetMuscleGroup: "Arms" as const,
+  await library.addCustomExercise({
+    user: testUser,
+    name: "My Special Exercise",
+    hasWeight: true,
+    trackingType: "reps",
+    metadata: {
+      targetMuscleGroup: "Arms" as const,
+    }
   });
 
-  const exercise = await library.getExercise(testUser, "My Special Exercise");
+  const { exercise } = await library.getExercise({ user: testUser, name: "My Special Exercise" });
   assertEquals(exercise.name, "My Special Exercise");
   assertEquals(exercise.isGlobal, false);
   assertEquals(exercise.createdBy, testUser);
@@ -86,7 +104,7 @@ Deno.test("Action: addCustomExercise creates user-specific exercise", async () =
 });
 
 // Test 4: Custom exercises are user-scoped
-Deno.test("Principle: Custom exercises only visible to creator", async () => {
+dbTest("Principle: Custom exercises only visible to creator", async () => {
   const [db, client] = await testDb();
   const library = new ExerciseLibraryConcept(db);
 
@@ -95,15 +113,15 @@ Deno.test("Principle: Custom exercises only visible to creator", async () => {
   const user1 = "user:alice" as User;
   const user2 = "user:bob" as User;
 
-  await library.addCustomExercise(user1, "Alice Exercise", true, "reps");
+  await library.addCustomExercise({ user: user1, name: "Alice Exercise", hasWeight: true, trackingType: "reps" });
 
   // Alice can see it
-  const aliceExercise = await library.getExercise(user1, "Alice Exercise");
+  const { exercise: aliceExercise } = await library.getExercise({ user: user1, name: "Alice Exercise" });
   assertEquals(aliceExercise.name, "Alice Exercise");
 
   // Bob cannot see it
   await assertRejects(
-    async () => await library.getExercise(user2, "Alice Exercise"),
+    async () => await library.getExercise({ user: user2, name: "Alice Exercise" }),
     Error,
     "Exercise not found"
   );
@@ -114,22 +132,32 @@ Deno.test("Principle: Custom exercises only visible to creator", async () => {
 });
 
 // Test 5: Update custom exercise
-Deno.test("Action: updateCustomExercise modifies metadata", async () => {
+dbTest("Action: updateCustomExercise modifies metadata", async () => {
   const [db, client] = await testDb();
   const library = new ExerciseLibraryConcept(db);
 
   console.log("📝 Testing custom exercise update...");
 
-  await library.addCustomExercise(testUser, "Test Exercise", true, "reps", {
-    targetMuscleGroup: "Chest" as const,
+  await library.addCustomExercise({
+    user: testUser,
+    name: "Test Exercise",
+    hasWeight: true,
+    trackingType: "reps",
+    metadata: {
+      targetMuscleGroup: "Chest" as const,
+    }
   });
 
-  await library.updateCustomExercise(testUser, "Test Exercise", {
-    targetMuscleGroup: "Back" as const,
-    equipment: "Cable" as const,
+  await library.updateCustomExercise({
+    user: testUser,
+    name: "Test Exercise",
+    updates: {
+      targetMuscleGroup: "Back" as const,
+      equipment: "Cable" as const,
+    }
   });
 
-  const updated = await library.getExercise(testUser, "Test Exercise");
+  const { exercise: updated } = await library.getExercise({ user: testUser, name: "Test Exercise" });
   assertEquals(updated.targetMuscleGroup, "Back");
   assertEquals(updated.equipment, "Cable");
 
@@ -139,17 +167,17 @@ Deno.test("Action: updateCustomExercise modifies metadata", async () => {
 });
 
 // Test 6: Delete custom exercise
-Deno.test("Action: deleteCustomExercise removes exercise", async () => {
+dbTest("Action: deleteCustomExercise removes exercise", async () => {
   const [db, client] = await testDb();
   const library = new ExerciseLibraryConcept(db);
 
   console.log("📝 Testing custom exercise deletion...");
 
-  await library.addCustomExercise(testUser, "To Delete", true, "reps");
-  await library.deleteCustomExercise(testUser, "To Delete");
+  await library.addCustomExercise({ user: testUser, name: "To Delete", hasWeight: true, trackingType: "reps" });
+  await library.deleteCustomExercise({ user: testUser, name: "To Delete" });
 
   await assertRejects(
-    async () => await library.getExercise(testUser, "To Delete"),
+    async () => await library.getExercise({ user: testUser, name: "To Delete" }),
     Error,
     "Exercise not found"
   );
@@ -160,14 +188,14 @@ Deno.test("Action: deleteCustomExercise removes exercise", async () => {
 });
 
 // Test 7: Validation - empty query without filters
-Deno.test("Action: searchExercises requires query or filters", async () => {
+dbTest("Action: searchExercises requires query or filters", async () => {
   const [db, client] = await testDb();
   const library = new ExerciseLibraryConcept(db);
 
   console.log("📝 Testing search validation...");
 
   await assertRejects(
-    async () => await library.searchExercises(testUser, "", {}),
+    async () => await library.searchExercises({ user: testUser, query: "", filters: {} }),
     Error,
     "Query or at least one filter required"
   );
@@ -178,20 +206,20 @@ Deno.test("Action: searchExercises requires query or filters", async () => {
 });
 
 // Test 8: TrackingType validation
-Deno.test("Action: addCustomExercise requires valid trackingType", async () => {
+dbTest("Action: addCustomExercise requires valid trackingType", async () => {
   const [db, client] = await testDb();
   const library = new ExerciseLibraryConcept(db);
 
   console.log("📝 Testing trackingType validation...");
 
   // Valid trackingTypes work
-  await library.addCustomExercise(testUser, "Plank", false, "duration");
-  await library.addCustomExercise(testUser, "Push Up", false, "reps");
+  await library.addCustomExercise({ user: testUser, name: "Plank", hasWeight: false, trackingType: "duration" });
+  await library.addCustomExercise({ user: testUser, name: "Push Up", hasWeight: false, trackingType: "reps" });
 
-  const plank = await library.getExercise(testUser, "Plank");
+  const { exercise: plank } = await library.getExercise({ user: testUser, name: "Plank" });
   assertEquals(plank.trackingType, "duration");
   
-  const pushup = await library.getExercise(testUser, "Push Up");
+  const { exercise: pushup } = await library.getExercise({ user: testUser, name: "Push Up" });
   assertEquals(pushup.trackingType, "reps");
 
   console.log("✅ Created exercises with different trackingTypes\n");
@@ -200,24 +228,34 @@ Deno.test("Action: addCustomExercise requires valid trackingType", async () => {
 });
 
 // Test 9: Cannot update hasWeight or trackingType
-Deno.test("Action: updateCustomExercise prevents changing immutable fields", async () => {
+dbTest("Action: updateCustomExercise prevents changing immutable fields", async () => {
   const [db, client] = await testDb();
   const library = new ExerciseLibraryConcept(db);
 
   console.log("📝 Testing immutable field protection...");
 
-  await library.addCustomExercise(testUser, "My Exercise", true, "reps", {
-    targetMuscleGroup: "Chest" as const,
+  await library.addCustomExercise({
+    user: testUser,
+    name: "My Exercise",
+    hasWeight: true,
+    trackingType: "reps",
+    metadata: {
+      targetMuscleGroup: "Chest" as const,
+    }
   });
 
   // Try to change hasWeight and trackingType (should be ignored)
-  await library.updateCustomExercise(testUser, "My Exercise", {
-    hasWeight: false,
-    trackingType: "duration" as const,
-    targetMuscleGroup: "Back" as const,
+  await library.updateCustomExercise({
+    user: testUser,
+    name: "My Exercise",
+    updates: {
+      hasWeight: false,
+      trackingType: "duration" as const,
+      targetMuscleGroup: "Back" as const,
+    }
   });
 
-  const exercise = await library.getExercise(testUser, "My Exercise");
+  const { exercise } = await library.getExercise({ user: testUser, name: "My Exercise" });
   
   // hasWeight and trackingType unchanged
   assertEquals(exercise.hasWeight, true);
