@@ -172,6 +172,9 @@
   },
   "active": "60ccb8b74e272dda",
   "lastOpenFiles": [
+    "src/concepts/ExerciseLibrary/~$exercise-database.xlsx",
+    "design/syncs.md",
+    "design/Syncs",
     "frontend-api-spec.md",
     "design/tools/api-extraction-from-code.md",
     "context/design/tools/api-extraction-from-code.md/20251026_125802.31ec2d06.md",
@@ -198,15 +201,12 @@
     "context/deno.json",
     "design/concepts/UserAuthetication.md",
     "design/tools/api-extraction-from-spec.md",
-    "context/design/tools/generate-api.md/20251021_224707.0543305d.md",
-    "design/tools/generate-api.md",
     "context/design/tools/generate-api.md/steps",
     "context/design/tools",
     "context/design/test-outputs/UserAuthentication-tests.md/steps",
     "context/design/test-outputs/ProgressionGuidance-tests.md/steps",
     "context/design/test-outputs/WorkoutLog-tests.md/steps",
     "context/design/test-outputs",
-    "design/test-outputs",
-    "context/src/concepts/UserAuthentication/UserAuthenticationConcept.test.ts"
+    "design/test-outputs"
   ]
 }

@@ -1,6 +1,7 @@
 import { Hono } from "jsr:@hono/hono";
 import { getDb } from "@utils/database.ts";
 import { cors } from "jsr:@hono/hono/cors";
+import { Db } from "npm:mongodb";
 import { walk } from "jsr:@std/fs";
 import { parseArgs } from "jsr:@std/cli/parse-args";
 import { toFileUrl } from "jsr:@std/path/to-file-url";
@@ -112,7 +113,7 @@ async function main() {
 
   // Seed exercises after all concepts loaded --- added for seeding exercise library at start ---
   if (exerciseLibrary) {
-    await seedExercises(exerciseLibrary);
+    await seedExercises(exerciseLibrary, db as Db);
   }
   //-----
 
@@ -127,13 +128,13 @@ async function main() {
 // Concepts: ExerciseLibrary
 // Note: will be refactored in A5 with proper sync infrastructure
 // ============================================================
-async function seedExercises(exerciseLibrary: any) {
+async function seedExercises(exerciseLibrary: any, db: Db) {
   try {
     const exerciseData = JSON.parse(
       Deno.readTextFileSync("src/concepts/ExerciseLibrary/exercise-data.json")
     );
     
-    await exerciseLibrary.seedGlobalExercises({exerciseData});
+    await exerciseLibrary.seedGlobalExercises({ exerciseData });
     console.log(`\n✓ Seeded ${exerciseData.length} global exercises`);
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : "An internal error occurred."

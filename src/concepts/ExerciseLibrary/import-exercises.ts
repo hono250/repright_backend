@@ -49,27 +49,8 @@ function inferTrackingType(name: string, equipment: string): "reps" | "duration"
 function mapMuscleGroup(value: string): string | undefined {
   if (!value) return undefined;
   
-  const mapping: Record<string, string> = {
-    "Abdominals": "Core",
-    "Obliques": "Core",
-    "Glutes": "Glutes",
-    "Gluteus Maximus": "Glutes",
-    "Quadriceps": "Legs",
-    "Hamstrings": "Legs",
-    "Calves": "Legs",
-    "Hip Flexors": "Legs",
-    "Chest": "Chest",
-    "Pectorals": "Chest",
-    "Back": "Back",
-    "Lats": "Back",
-    "Shoulders": "Shoulders",
-    "Deltoids": "Shoulders",
-    "Biceps": "Arms",
-    "Triceps": "Arms",
-    "Forearms": "Arms",
-  };
-  
-  return mapping[value] || "Other";
+  if (value.trim() === '') return "Other";
+  return value.trim();
 }
 
 function mapEquipment(value: string): string | undefined {
@@ -128,6 +109,7 @@ const workbook = XLSX.read(fileData, { type: "buffer" });
 const sheetName = workbook.SheetNames[0];
 const worksheet = workbook.Sheets[sheetName];
 const data = XLSX.utils.sheet_to_json(worksheet);
+
 
 const exercises = data
   .map((row, index) => mapExercise(row, worksheet, index + 1)) // +1 for header row
