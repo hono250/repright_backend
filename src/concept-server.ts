@@ -33,6 +33,10 @@ async function main() {
   // --- Dynamic Concept Loading and Routing ---
   console.log(`Scanning for concepts in ./${CONCEPTS_DIR}...`);
 
+  // Store ExerciseLibrary instance for seeding --- added for seeding exercise library at start ---
+  let exerciseLibrary: any = null;
+  //-----
+
   for await (
     const entry of walk(CONCEPTS_DIR, {
       maxDepth: 1,
@@ -61,6 +65,13 @@ async function main() {
       }
 
       const instance = new ConceptClass(db);
+     
+      // Store ExerciseLibrary instance --- added for seeding exercise library at start ---
+      if (conceptName === "ExerciseLibrary") {
+        exerciseLibrary = instance;
+      }
+      //-----
+
       const conceptApiName = conceptName;
       console.log(
         `- Registering concept: ${conceptName} at ${BASE_URL}/${conceptApiName}`,
@@ -99,9 +110,43 @@ async function main() {
     }
   }
 
+  // Seed exercises after all concepts loaded --- added for seeding exercise library at start ---
+  if (exerciseLibrary) {
+    await seedExercises(exerciseLibrary);
+  }
+  //-----
+
   console.log(`\nServer listening on http://localhost:${PORT}`);
   Deno.serve({ port: PORT }, app.fetch);
 }
+
+// ============================================================
+// SYNC: Seed Global Exercises on Startup
+// Purpose: Ensure exercise library is populated before users start
+// Trigger: Server initialization
+// Concepts: ExerciseLibrary
+// Note: will be refactored in A5 with proper sync infrastructure
+// ============================================================
+async function seedExercises(exerciseLibrary: any) {
+  try {
+    const exerciseData = JSON.parse(
+      Deno.readTextFileSync("src/concepts/ExerciseLibrary/exercise-data.json")
+    );
+    
+    await exerciseLibrary.seedGlobalExercises({exerciseData});
+    console.log(`\n✓ Seeded ${exerciseData.length} global exercises`);
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : "An internal error occurred."
+    if (errorMessage.includes("already seeded")) {
+      console.log(`\n✓ Global exercises already seeded`);
+    } else {
+      console.error("\n✗ Failed to seed exercises:", errorMessage);
+    }
+  }
+}
+// ============================================================
+// END SYNC
+// ============================================================
 
 // Run the server
 main();
