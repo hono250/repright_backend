@@ -100,3 +100,22 @@ The sync will:
 **Discovery:** Tests showed resource leaks, but these were MongoDB driver internals, not the code. Switching to per-test database initialization resolved functional issues.
 
 **Link:** [20251016_183212.5be893de](../context/src/concepts/WorkoutLog/WorkoutLogConcept.test.ts/20251016_183212.5be893de.md)
+
+
+
+# Key Design Evolution A4a → A4b
+
+## 1. ExerciseLibrary Concept (New)
+
+**Purpose**: Centralized exercise database with metadata to support both templates and workout logging
+Key Operations:
+
+- seedExercises() : Initializes database with common exercises on first load
+- getExercise(name):  Retrieves exercise details including tracking type
+- getAllExercises(): Returns full library for exercise picker
+
+**Why Added**: Templates and WorkoutLog need to know if exercises are rep-based (weight × reps) or duration-based (time). Users can browse, watch demos on exercises, choose exercises to add to their workouts. 
+
+## 2. WorkoutTemplate Concept (New)
+
+Purpose: Enable users to save and reuse workout routines instead of rebuilding each session
