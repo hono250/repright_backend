@@ -172,6 +172,7 @@
   },
   "active": "60ccb8b74e272dda",
   "lastOpenFiles": [
+    "src/gemini-llm.ts",
     "src/concepts/ExerciseLibrary/~$exercise-database.xlsx",
     "design/syncs.md",
     "design/Syncs",
@@ -206,7 +207,6 @@
     "context/design/test-outputs/UserAuthentication-tests.md/steps",
     "context/design/test-outputs/ProgressionGuidance-tests.md/steps",
     "context/design/test-outputs/WorkoutLog-tests.md/steps",
-    "context/design/test-outputs",
-    "design/test-outputs"
+    "context/design/test-outputs"
   ]
 }

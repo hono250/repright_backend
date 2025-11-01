@@ -1,6 +1,9 @@
 import { Collection, Db } from "npm:mongodb";
 import { ID, User, Exercise, Empty } from "@utils/types.ts";
 import { freshID } from "@utils/database.ts";
+import { GeminiLLM, loadConfig } from "../../gemini-llm.ts";
+
+const defaultLLM = new GeminiLLM(loadConfig());
 
 /**
  * Recommendation document in MongoDB
@@ -48,18 +51,31 @@ export default class ProgressionGuidanceConcept {
     user: User;
     exercise: Exercise;
     workoutSummary: WorkoutSummary;
-    llm: LLM;
+    llm?: LLM ;
   }): Promise<Empty> {
-    const { user, exercise, workoutSummary, llm } = params;
+    const llm = params.llm || defaultLLM;
+    const { user, exercise, workoutSummary, } = params;
+
+    // Convert string dates to Date objects if needed
+    const normalizedSummary = {
+    ...workoutSummary,
+    recentSets: workoutSummary.recentSets.map(set => ({
+      ...set,
+      date: typeof set.date === 'string' ? new Date(set.date) : set.date
+    })),
+    lastWorkoutDate: typeof workoutSummary.lastWorkoutDate === 'string' 
+      ? new Date(workoutSummary.lastWorkoutDate) 
+      : workoutSummary.lastWorkoutDate
+  };
     
-    if (workoutSummary.recentSets.length < 3) {
+    if (normalizedSummary.recentSets.length < 3) {
       throw new Error("Need at least 3 recent sets to generate recommendation");
     }
 
-    const prompt = this.createPrompt(exercise, workoutSummary);
+    const prompt = this.createPrompt(exercise, normalizedSummary);
     const response = await llm.executeLLM(prompt);
     
-    const parsed = this.parseAndValidate(response, workoutSummary);
+    const parsed = this.parseAndValidate(response, normalizedSummary);
 
     await this.recommendations.insertOne({
       _id: freshID(),
