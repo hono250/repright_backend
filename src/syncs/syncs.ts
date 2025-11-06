@@ -4,10 +4,15 @@
 
 import type { Sync } from "@engine";
 
-
+import * as sync_app from "./app.sync.ts";
 
 const allSyncs: Record<string, Sync> = {};
 
 
+for (const [name, func] of Object.entries(sync_app)) {
+  if (typeof func === "function") {
+    allSyncs[`app.${name}`] = func as Sync;
+  }
+}
 
 export default allSyncs;

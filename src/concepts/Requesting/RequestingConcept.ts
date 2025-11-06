@@ -233,7 +233,8 @@ export function startRequestingServer(
           return c.json(result);
         } catch (e) {
           console.error(`Error in ${conceptName}.${method}:`, e);
-          return c.json({ error: "An internal server error occurred." }, 500);
+          const errorMessage = e instanceof Error ? e.message : "An internal server error occurred.";
+          return c.json({ error: errorMessage }, 500);
         }
       });
       console.log(msg);
@@ -290,7 +291,7 @@ export function startRequestingServer(
         if (e.message.includes("timed out")) {
           return c.json({ error: "Request timed out." }, 504); // Gateway Timeout
         }
-        return c.json({ error: "An internal server error occurred." }, 500);
+        return c.json({ error: e.message ||"An internal server error occurred." }, 500);
       } else {
         return c.json({ error: "unknown error occurred." }, 418);
       }

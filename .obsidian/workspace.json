@@ -172,18 +172,19 @@
   },
   "active": "60ccb8b74e272dda",
   "lastOpenFiles": [
+    "src/syncs/syncs.ts",
+    "src/syncs.ts",
+    "src/syncs/app.sync.ts",
+    "src/syncs/app.syncs.ts",
     "design/tools/sync-background.md",
     "design/tools/concept-background.md",
     "Dockerfile",
-    "src/syncs/syncs.ts",
     "src/concepts/test_concepts.ts",
     "src/concepts/concepts.ts",
     "src/main.ts",
     "src/utils/main.ts",
     "src/utils/init.ts",
     "src/utils/generate_imports.ts",
-    "src/syncs",
-    "src/engine/test/syncs.ts",
     "src/concepts/Requesting/README.md",
     "design/background/implementing-synchronizations.md",
     "design/background/architecture.md",
@@ -206,7 +207,6 @@
     "context/design/tools/api-extraction-from-code.md/steps/_.3a59af90.md",
     "context/design/tools/api-extraction-from-code.md/steps/_.331f5a1f.md",
     "context/design/tools/api-extraction-from-code.md/steps/_.2086d81d.md",
-    "context/design/tools/api-extraction-from-code.md/steps/_.1bf7fdfc.md",
-    "context/design/tools/api-extraction-from-code.md/steps/Generic Parameters.087161ea.md"
+    "context/design/tools/api-extraction-from-code.md/steps/_.1bf7fdfc.md"
   ]
 }

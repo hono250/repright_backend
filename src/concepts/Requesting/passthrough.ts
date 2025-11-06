@@ -25,7 +25,9 @@
  */
 
 export const inclusions: Record<string, string> = {
- 
+  "/api/UserAuthentication/register": "public - allow new users",
+  "/api/UserAuthentication/login": "public - authenticate users",
+  "/api/ExerciseLibrary/seedGlobalExercises": "admin setup",
 };
 
 /**
@@ -39,5 +41,38 @@ export const inclusions: Record<string, string> = {
  */
 
 export const exclusions: Array<string> = [
-
+  // ExerciseLibrary
+  "/api/ExerciseLibrary/searchExercises",
+  "/api/ExerciseLibrary/addCustomExercise",
+  "/api/ExerciseLibrary/getExercise",
+  "/api/ExerciseLibrary/updateCustomExercise",
+  "/api/ExerciseLibrary/deleteCustomExercise",
+  
+  // ProgressionGuidance
+  "/api/ProgressionGuidance/generateRecommendationLLM",
+  "/api/ProgressionGuidance/getRecommendation",
+  "/api/ProgressionGuidance/acceptRecommendation",
+  "/api/ProgressionGuidance/dismissRecommendation",
+  "/api/ProgressionGuidance/getRecommendationHistory",
+  "/api/ProgressionGuidance/createPrompt",        // private method
+  "/api/ProgressionGuidance/parseAndValidate",    // private method
+  
+  // UserAuthentication
+  "/api/UserAuthentication/logout",
+  "/api/UserAuthentication/deleteAccount",
+  "/api/UserAuthentication/authenticate",
+  
+  // WorkoutLog
+  "/api/WorkoutLog/logSet",
+  "/api/WorkoutLog/getLastWorkout",
+  "/api/WorkoutLog/getHistory",
+  "/api/WorkoutLog/getSummary",
+  
+  // WorkoutTemplate
+  "/api/WorkoutTemplate/createTemplate",
+  "/api/WorkoutTemplate/getTemplates",
+  "/api/WorkoutTemplate/getTemplate",
+  "/api/WorkoutTemplate/updateTemplate",
+  "/api/WorkoutTemplate/deleteTemplate",
+  "/api/WorkoutTemplate/markTemplateUsed",
 ];
