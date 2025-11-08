@@ -43,19 +43,6 @@ This document tracks significant changes made to the RepRight concept design bas
 
 **Impact:** Allows focus on core fitness functionality while maintaining security basics.
 
----
-
-## Missing Sync (TODO)
-**Feedback:** Missing a sync that generates a recommendation (based on workout history) when the workout starts, and then if its accepted, that's what will be logged in workoutlog.
-
-**TODO:** Implement this sync in Assignment 4b
-
-The sync will:
-1. When user starts workout → call WorkoutLog.getSummary()
-2. Pass summary to ProgressionGuidance.generateRecommendationLLM()
-3. If user accepts → use returned values in WorkoutLog.logSet()
-
----
 
 ## LLM Reliability Concerns
 **Feedback:** Questions about LLm reliability on these tasks suggests plan for some fallbacks.
@@ -68,39 +55,6 @@ The sync will:
 5. **Fallback UI** - If LLM fails, users can still manually log workouts without recommendations
 
 ---
-
-## Interesting Moments Log
-
-### 1. Argon2 → bcrypt Library Switch
-**Issue:** Argon2 version 0.3.0 didn't exist, and 3.0.2 had native execution errors in `verify()` function.
-
-**Solution:** Switched to bcrypt for password hashing - simpler and more stable for Deno environment.
-
-**Link:** [20251016_183647.05c4ffb6](../context/src/concepts/UserAuthentication/UserAuthenticationConcept.test.ts/20251016_183647.05c4ffb6.md)
-### 2. Added getSummary() Action to WorkoutLog
-**Rationale:** A2 feedback identified improper concept dependency - ProgressionGuidance was accessing WorkoutLog's internal state.
-
-**Solution:** Created `getSummary()` action that returns structured data, maintaining concept independence.
-
-**Link:**[20251016_183153.e02d3181](../context/src/concepts/WorkoutLog/WorkoutLogConcept.ts/20251016_183153.e02d3181.md)
-
-### 3. Mock LLM for Cost-Free Testing
-**Challenge:** Testing ProgressionGuidance would consume API credits with every test run.
-
-**Solution:** Created `MockLLM` class that returns predetermined responses, allowing full test coverage without API costs.
-
-**Link:[20251016_183357.a78e003f](../context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.test.ts/20251016_183357.a78e003f.md)**
-
-### 4. Ported A3 Validators Successfully
-**Achievement:** All 3 validators from Assignment 3 (weight change limits, rep range checks, plateau-strategy consistency) integrated and tested with mock edge cases to verify they catch potential LLM hallucinations when real LLM is used.
-
-**Link:** [20251016_183337.d1761aac](../context/src/concepts/ProgressionGuidance/ProgressionGuidanceConcept.ts/20251016_183337.d1761aac.md)
-
-### 5. MongoDB Connection Leaks in Deno Tests
-**Discovery:** Tests showed resource leaks, but these were MongoDB driver internals, not the code. Switching to per-test database initialization resolved functional issues.
-
-**Link:** [20251016_183212.5be893de](../context/src/concepts/WorkoutLog/WorkoutLogConcept.test.ts/20251016_183212.5be893de.md)
-
 
 
 # Key Design Evolution A4a → A4b
@@ -119,3 +73,97 @@ Key Operations:
 ## 2. WorkoutTemplate Concept (New)
 
 Purpose: Enable users to save and reuse workout routines instead of rebuilding each session
+
+
+# Key Design Evolution A4b → A4c
+
+## 1. Authentication Implementation with Backend Syncs
+
+**Challenge**: A4b had hardcoded userId for single-user testing. Multi-user deployment required proper authentication.
+
+**Solution Implemented**:
+- Token-based session management using `UserAuthentication` concept
+- Backend syncs validate every authenticated request
+- Frontend stores token in localStorage and includes in all API calls
+
+**Security Model**:
+- Backend extracts userId from verified token
+- All concept actions use server-side userId
+- Invalid tokens cause syncs to fail with authentication error
+
+---
+
+## 2. Requesting Concept Configuration
+
+**Included Routes** (passthrough, no auth required):
+- `/api/UserAuthentication/register` - public registration
+- `/api/UserAuthentication/login` - public login
+- `/api/ExerciseLibrary/seedGlobalExercises` - admin setup
+
+**Excluded Routes** (require authentication via syncs):
+- All WorkoutTemplate actions
+- All ExerciseLibrary actions (except seeding)
+- All WorkoutLog actions
+- All ProgressionGuidance actions
+- UserAuthentication: logout, deleteAccount
+
+**Rationale**: Exclude all user-specific data operations to ensure proper access control. Only public-facing actions (register, login) remain as passthrough.
+
+---
+
+## 3. Frontend Architecture Refactoring
+
+**API Service Pattern** (`src/api/index.ts`):
+- Centralized all backend communication
+- Automatic token injection: `{ ...params, token: getToken() }`
+- Grouped by concept for maintainability
+- Single source of truth for backend URL
+
+**Before (A4b)**:
+```javascript
+// Scattered fetch calls with manual userId
+const response = await fetch('/api/WorkoutTemplate/getTemplates', {
+  body: JSON.stringify({ user: localStorage.getItem('userId') })
+});
+```
+
+**After (A4c)**:
+```javascript
+// Clean API service with automatic auth
+const data = await templates.getAll();  // Token injected automatically
+```
+
+**Impact**: Views don't handle authentication (separation of concerns.)
+
+---
+
+## 4. Implementation Scope Decisions
+
+### Fully Implemented 
+- Complete authentication flow with secure syncs
+- Template CRUD with multi-user support
+- Workout session tracking with AI recommendations
+- Exercise library search and filtering
+- Data persistence across user sessions
+
+### Deferred to Future Iterations (TODO)
+**ExerciseLibrary Custom Exercise UI**:
+- Backend actions implemented and authenticated
+- Frontend UI not built
+- **Rationale**: Power-user feature; core flow prioritized
+
+**Recommendation History View**:
+- Backend `getRecommendationHistory()` works
+- UI for browsing through recommendations not implemented
+- **Rationale**: Current recommendation display sufficient for primary use case
+
+**WorkoutLog History Visualization**:
+- Backend `getHistory()` functional (used by AI)
+- No chart/graph UI
+- **Rationale**: Focused on logging and recommendations over retrospective analysis
+
+**Design Philosophy**: Deliver complete user journey (plan -> execute -> optimize workouts) over feature breadth. Missing features are **UI gaps**, not **architectural gaps** - concepts and syncs support them.
+
+---
+
+

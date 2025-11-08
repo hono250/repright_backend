@@ -1,0 +1,629 @@
+NOTE: Could not scroll up far enough to show full trace since upon opening the exercise picker,
+it loads all 3000+ exercises from ExerciseLibrary to display to the user. 
+
+{
+[... {
+      _id: '019a3165-50d1-74d4-b1fb-3c2fd4fb2d72',
+      isGlobal: true,
+      createdBy: null,
+      name: 'Barbell Back Rack Split Squat',
+      hasWeight: true,
+      trackingType: 'reps',
+      targetMuscleGroup: 'Quadriceps',
+      primeMoverMuscle: 'Quadriceps Femoris',
+      equipment: 'Barbell',
+      exerciseClassification: 'Bodybuilding',
+      forceType: 'Push',
+      posture: 'Other',
+      videoUrl: 'https://youtu.be/KXUJxb8hO8U'
+    },
+    {
+      _id: '019a3165-50d1-72da-b0d4-c9a3ac0909d7',
+      isGlobal: true,
+      createdBy: null,
+      name: 'Slider Single Arm Kettlebell Bottoms Up Front Rack Ipsilateral Reverse Lunge',
+      hasWeight: true,
+      trackingType: 'reps',
+      targetMuscleGroup: 'Quadriceps',
+      primeMoverMuscle: 'Quadriceps Femoris',
+      equipment: 'Other',
+      exerciseClassification: 'Bodybuilding',
+      forceType: 'Push',
+      posture: 'Standing',
+      videoUrl: null
+    },
+    ... 2860 more items
+  ]
+} => { request: '019a60f1-cd4a-7db7-9f36-10e0e634978e' }
+[Requesting] Received request for path: /WorkoutTemplate/getTemplates
+Requesting.request {
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutTemplate/getTemplates'
+} => { request: '019a60f2-76c8-725f-87fe-656a1f9b6625' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutTemplate.getTemplates { user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' } => {
+  templates: [
+    {
+      _id: '019a3d0a-b36b-728c-972e-41e6f1bf8daf',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'Chest Day',
+      exercises: [Array],
+      lastPerformed: '2025-11-08T00:32:14.163Z'
+    },
+    {
+      _id: '019a36db-76bf-74c5-8e21-fc40e7238ffe',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'core',
+      exercises: [Array],
+      lastPerformed: '2025-11-06T02:53:42.299Z'
+    },
+    {
+      _id: '019a3b5b-ff09-7625-930e-375ca224fdbc',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'leg day',
+      exercises: [Array],
+      lastPerformed: null
+    }
+  ]
+}
+Requesting.respond {
+  request: '019a60f2-76c8-725f-87fe-656a1f9b6625',
+  templates: [
+    {
+      _id: '019a3d0a-b36b-728c-972e-41e6f1bf8daf',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'Chest Day',
+      exercises: [Array],
+      lastPerformed: '2025-11-08T00:32:14.163Z'
+    },
+    {
+      _id: '019a36db-76bf-74c5-8e21-fc40e7238ffe',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'core',
+      exercises: [Array],
+      lastPerformed: '2025-11-06T02:53:42.299Z'
+    },
+    {
+      _id: '019a3b5b-ff09-7625-930e-375ca224fdbc',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'leg day',
+      exercises: [Array],
+      lastPerformed: null
+    }
+  ]
+} => { request: '019a60f2-76c8-725f-87fe-656a1f9b6625' }
+[Requesting] Received request for path: /WorkoutTemplate/getTemplate
+Requesting.request {
+  name: 'Chest Day',
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutTemplate/getTemplate'
+} => { request: '019a60f2-9068-73d7-8225-d30c9cc6c19f' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutTemplate.getTemplate { user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc', name: 'Chest Day' } => {
+  template: {
+    _id: '019a3d0a-b36b-728c-972e-41e6f1bf8daf',
+    user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+    name: 'Chest Day',
+    exercises: [ [Object], [Object], [Object] ],
+    lastPerformed: '2025-11-08T00:32:14.163Z'
+  }
+}
+Requesting.respond {
+  request: '019a60f2-9068-73d7-8225-d30c9cc6c19f',
+  template: {
+    _id: '019a3d0a-b36b-728c-972e-41e6f1bf8daf',
+    user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+    name: 'Chest Day',
+    exercises: [ [Object], [Object], [Object] ],
+    lastPerformed: '2025-11-08T00:32:14.163Z'
+  }
+} => { request: '019a60f2-9068-73d7-8225-d30c9cc6c19f' }
+[Requesting] Received request for path: /ExerciseLibrary/getExercise
+Requesting.request {
+  name: 'Slider Atomic Push Up',
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/ExerciseLibrary/getExercise'
+} => { request: '019a60f2-92bf-7488-82f8-29b6eb48273b' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+ExerciseLibrary.getExercise {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  name: 'Slider Atomic Push Up'
+} => {
+  exercise: {
+    _id: '019a3165-50d4-7021-9a07-a8389723de4f',
+    isGlobal: true,
+    createdBy: null,
+    name: 'Slider Atomic Push Up',
+    hasWeight: true,
+    trackingType: 'reps',
+    targetMuscleGroup: 'Chest',
+    primeMoverMuscle: 'Pectoralis Major',
+    equipment: 'Other',
+    exerciseClassification: 'Other',
+    forceType: 'Push',
+    posture: 'Prone',
+    videoUrl: 'https://youtu.be/XsU1dAVQ04M?si=xZbKraABgDpY1zUM'
+  }
+}
+Requesting.respond {
+  request: '019a60f2-92bf-7488-82f8-29b6eb48273b',
+  exercise: {
+    _id: '019a3165-50d4-7021-9a07-a8389723de4f',
+    isGlobal: true,
+    createdBy: null,
+    name: 'Slider Atomic Push Up',
+    hasWeight: true,
+    trackingType: 'reps',
+    targetMuscleGroup: 'Chest',
+    primeMoverMuscle: 'Pectoralis Major',
+    equipment: 'Other',
+    exerciseClassification: 'Other',
+    forceType: 'Push',
+    posture: 'Prone',
+    videoUrl: 'https://youtu.be/XsU1dAVQ04M?si=xZbKraABgDpY1zUM'
+  }
+} => { request: '019a60f2-92bf-7488-82f8-29b6eb48273b' }
+[Requesting] Received request for path: /ExerciseLibrary/getExercise
+Requesting.request {
+  name: 'Double Cable Decline Bench Chest Fly',
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/ExerciseLibrary/getExercise'
+} => { request: '019a60f2-9498-72d7-86f9-c2e2810aeed1' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+ExerciseLibrary.getExercise {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  name: 'Double Cable Decline Bench Chest Fly'
+} => {
+  exercise: {
+    _id: '019a3165-50d8-7545-bf2f-97660334db2e',
+    isGlobal: true,
+    createdBy: null,
+    name: 'Double Cable Decline Bench Chest Fly',
+    hasWeight: true,
+    trackingType: 'reps',
+    targetMuscleGroup: 'Chest',
+    primeMoverMuscle: 'Pectoralis Major',
+    equipment: 'Cable',
+    exerciseClassification: 'Bodybuilding',
+    forceType: 'Push',
+    posture: 'Supine',
+    videoUrl: 'https://youtu.be/jIt8nG02Ss0?si=eVQ-M_zbzpxQN1mL&amp;utm_source=MTQxZ'
+  }
+}
+Requesting.respond {
+  request: '019a60f2-9498-72d7-86f9-c2e2810aeed1',
+  exercise: {
+    _id: '019a3165-50d8-7545-bf2f-97660334db2e',
+    isGlobal: true,
+    createdBy: null,
+    name: 'Double Cable Decline Bench Chest Fly',
+    hasWeight: true,
+    trackingType: 'reps',
+    targetMuscleGroup: 'Chest',
+    primeMoverMuscle: 'Pectoralis Major',
+    equipment: 'Cable',
+    exerciseClassification: 'Bodybuilding',
+    forceType: 'Push',
+    posture: 'Supine',
+    videoUrl: 'https://youtu.be/jIt8nG02Ss0?si=eVQ-M_zbzpxQN1mL&amp;utm_source=MTQxZ'
+  }
+} => { request: '019a60f2-9498-72d7-86f9-c2e2810aeed1' }
+[Requesting] Received request for path: /ExerciseLibrary/getExercise
+Requesting.request {
+  name: 'Barbell Bench Press',
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/ExerciseLibrary/getExercise'
+} => { request: '019a60f2-9630-785c-85a0-4c77b9918ac7' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+ExerciseLibrary.getExercise {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  name: 'Barbell Bench Press'
+} => {
+  exercise: {
+    _id: '019a3165-50d1-796e-af2c-e23ddde3c24f',
+    isGlobal: true,
+    createdBy: null,
+    name: 'Barbell Bench Press',
+    hasWeight: true,
+    trackingType: 'reps',
+    targetMuscleGroup: 'Chest',
+    primeMoverMuscle: 'Pectoralis Major',
+    equipment: 'Barbell',
+    exerciseClassification: 'Powerlifting',
+    forceType: 'Push',
+    posture: 'Supine',
+    videoUrl: 'https://youtu.be/SCVCLChPQFY'
+  }
+}
+Requesting.respond {
+  request: '019a60f2-9630-785c-85a0-4c77b9918ac7',
+  exercise: {
+    _id: '019a3165-50d1-796e-af2c-e23ddde3c24f',
+    isGlobal: true,
+    createdBy: null,
+    name: 'Barbell Bench Press',
+    hasWeight: true,
+    trackingType: 'reps',
+    targetMuscleGroup: 'Chest',
+    primeMoverMuscle: 'Pectoralis Major',
+    equipment: 'Barbell',
+    exerciseClassification: 'Powerlifting',
+    forceType: 'Push',
+    posture: 'Supine',
+    videoUrl: 'https://youtu.be/SCVCLChPQFY'
+  }
+} => { request: '019a60f2-9630-785c-85a0-4c77b9918ac7' }
+[Requesting] Received request for path: /WorkoutLog/getSummary
+Requesting.request {
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  weeksBack: 4,
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutLog/getSummary'
+} => { request: '019a60f3-003d-719a-91c7-9d7a4325d25d' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutLog.getSummary {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  weeksBack: 4
+} => {
+  summary: {
+    recentSets: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object]
+    ],
+    sessionCount: 2,
+    lastWorkoutDate: 2025-11-08T00:32:12.356Z
+  }
+}
+Requesting.respond {
+  request: '019a60f3-003d-719a-91c7-9d7a4325d25d',
+  summary: {
+    recentSets: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object]
+    ],
+    sessionCount: 2,
+    lastWorkoutDate: 2025-11-08T00:32:12.356Z
+  }
+} => { request: '019a60f3-003d-719a-91c7-9d7a4325d25d' }
+[Requesting] Received request for path: /ProgressionGuidance/generateRecommendationLLM
+Requesting.request {
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  workoutSummary: {
+    recentSets: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object]
+    ],
+    sessionCount: 2,
+    lastWorkoutDate: '2025-11-08T00:32:12.356Z'
+  },
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/ProgressionGuidance/generateRecommendationLLM'
+} => { request: '019a60f3-025a-751e-b15c-212372d6594b' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+ProgressionGuidance.generateRecommendationLLM {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  workoutSummary: {
+    recentSets: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object]
+    ],
+    sessionCount: 2,
+    lastWorkoutDate: '2025-11-08T00:32:12.356Z'
+  }
+} => {}
+Requesting.respond { request: '019a60f3-025a-751e-b15c-212372d6594b' } => { request: '019a60f3-025a-751e-b15c-212372d6594b' }
+[Requesting] Received request for path: /ProgressionGuidance/getRecommendation
+Requesting.request {
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/ProgressionGuidance/getRecommendation'
+} => { request: '019a60f3-079d-7401-ae70-33e6c39ef610' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+ProgressionGuidance.getRecommendation {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Double Cable Decline Bench Chest Fly'
+} => {
+  recommendation: {
+    _id: '019a60f3-05eb-7af6-bbf6-dc57556da854',
+    user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+    exercise: 'Double Cable Decline Bench Chest Fly',
+    suggestedWeight: 30,
+    suggestedReps: 10,
+    reasoning: "You've consistently hit 30lbs for 10 reps across your last few sessions. While you see a rep drop to 8 on occasion, this is typical for an isolation movement like the cable fly as fatigue builds within a session. We haven't seen a true plateau yet (same weight and similar reps across 3+ *different* workout dates).",
+    plateauDetected: false,
+    interventionStrategy: 'maintain',
+    status: 'pending',
+    createdAt: 2025-11-08T00:52:10.859Z
+  }
+}
+Requesting.respond {
+  request: '019a60f3-079d-7401-ae70-33e6c39ef610',
+  recommendation: {
+    _id: '019a60f3-05eb-7af6-bbf6-dc57556da854',
+    user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+    exercise: 'Double Cable Decline Bench Chest Fly',
+    suggestedWeight: 30,
+    suggestedReps: 10,
+    reasoning: "You've consistently hit 30lbs for 10 reps across your last few sessions. While you see a rep drop to 8 on occasion, this is typical for an isolation movement like the cable fly as fatigue builds within a session. We haven't seen a true plateau yet (same weight and similar reps across 3+ *different* workout dates).",
+    plateauDetected: false,
+    interventionStrategy: 'maintain',
+    status: 'pending',
+    createdAt: 2025-11-08T00:52:10.859Z
+  }
+} => { request: '019a60f3-079d-7401-ae70-33e6c39ef610' }
+[Requesting] Received request for path: /WorkoutLog/logSet
+Requesting.request {
+  exercise: 'Slider Atomic Push Up',
+  weight: 45,
+  reps: 7,
+  duration: null,
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutLog/logSet'
+} => { request: '019a60f3-8555-7428-aab7-986e031b9681' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutLog.logSet {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Slider Atomic Push Up',
+  weight: 45,
+  reps: 7,
+  duration: null
+} => {}
+Requesting.respond { request: '019a60f3-8555-7428-aab7-986e031b9681' } => { request: '019a60f3-8555-7428-aab7-986e031b9681' }
+[Requesting] Received request for path: /WorkoutLog/logSet
+Requesting.request {
+  exercise: 'Slider Atomic Push Up',
+  weight: 45,
+  reps: 5,
+  duration: null,
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutLog/logSet'
+} => { request: '019a60f3-8700-75f0-8860-04c0341c2dd6' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutLog.logSet {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Slider Atomic Push Up',
+  weight: 45,
+  reps: 5,
+  duration: null
+} => {}
+Requesting.respond { request: '019a60f3-8700-75f0-8860-04c0341c2dd6' } => { request: '019a60f3-8700-75f0-8860-04c0341c2dd6' }
+[Requesting] Received request for path: /WorkoutLog/logSet
+Requesting.request {
+  exercise: 'Slider Atomic Push Up',
+  weight: 45,
+  reps: 6,
+  duration: null,
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutLog/logSet'
+} => { request: '019a60f3-888f-7664-bb19-21a5ca956f3d' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutLog.logSet {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Slider Atomic Push Up',
+  weight: 45,
+  reps: 6,
+  duration: null
+} => {}
+Requesting.respond { request: '019a60f3-888f-7664-bb19-21a5ca956f3d' } => { request: '019a60f3-888f-7664-bb19-21a5ca956f3d' }
+[Requesting] Received request for path: /WorkoutLog/logSet
+Requesting.request {
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  weight: 30,
+  reps: 10,
+  duration: null,
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutLog/logSet'
+} => { request: '019a60f3-8a03-7463-89fd-87c0e73c8199' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutLog.logSet {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  weight: 30,
+  reps: 10,
+  duration: null
+} => {}
+Requesting.respond { request: '019a60f3-8a03-7463-89fd-87c0e73c8199' } => { request: '019a60f3-8a03-7463-89fd-87c0e73c8199' }
+[Requesting] Received request for path: /WorkoutLog/logSet
+Requesting.request {
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  weight: 30,
+  reps: 10,
+  duration: null,
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutLog/logSet'
+} => { request: '019a60f3-8b7d-7b41-ade9-887129c23625' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutLog.logSet {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  weight: 30,
+  reps: 10,
+  duration: null
+} => {}
+Requesting.respond { request: '019a60f3-8b7d-7b41-ade9-887129c23625' } => { request: '019a60f3-8b7d-7b41-ade9-887129c23625' }
+[Requesting] Received request for path: /WorkoutLog/logSet
+Requesting.request {
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  weight: 30,
+  reps: 10,
+  duration: null,
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutLog/logSet'
+} => { request: '019a60f3-8d06-75ae-9376-b574afb6005e' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutLog.logSet {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Double Cable Decline Bench Chest Fly',
+  weight: 30,
+  reps: 10,
+  duration: null
+} => {}
+Requesting.respond { request: '019a60f3-8d06-75ae-9376-b574afb6005e' } => { request: '019a60f3-8d06-75ae-9376-b574afb6005e' }
+[Requesting] Received request for path: /WorkoutLog/logSet
+Requesting.request {
+  exercise: 'Barbell Bench Press',
+  weight: 185,
+  reps: 5,
+  duration: null,
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutLog/logSet'
+} => { request: '019a60f3-8e7d-7f65-9788-15acb07b212b' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutLog.logSet {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Barbell Bench Press',
+  weight: 185,
+  reps: 5,
+  duration: null
+} => {}
+Requesting.respond { request: '019a60f3-8e7d-7f65-9788-15acb07b212b' } => { request: '019a60f3-8e7d-7f65-9788-15acb07b212b' }
+[Requesting] Received request for path: /WorkoutLog/logSet
+Requesting.request {
+  exercise: 'Barbell Bench Press',
+  weight: 185,
+  reps: 5,
+  duration: null,
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutLog/logSet'
+} => { request: '019a60f3-8ffd-7916-ab25-d3146a56a800' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutLog.logSet {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Barbell Bench Press',
+  weight: 185,
+  reps: 5,
+  duration: null
+} => {}
+Requesting.respond { request: '019a60f3-8ffd-7916-ab25-d3146a56a800' } => { request: '019a60f3-8ffd-7916-ab25-d3146a56a800' }
+[Requesting] Received request for path: /WorkoutLog/logSet
+Requesting.request {
+  exercise: 'Barbell Bench Press',
+  weight: 190,
+  reps: 5,
+  duration: null,
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutLog/logSet'
+} => { request: '019a60f3-91cc-7194-b271-84a6406f0821' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutLog.logSet {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  exercise: 'Barbell Bench Press',
+  weight: 190,
+  reps: 5,
+  duration: null
+} => {}
+Requesting.respond { request: '019a60f3-91cc-7194-b271-84a6406f0821' } => { request: '019a60f3-91cc-7194-b271-84a6406f0821' }
+[Requesting] Received request for path: /WorkoutTemplate/markTemplateUsed
+Requesting.request {
+  name: 'Chest Day',
+  date: '2025-11-08T00:52:46.956Z',
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutTemplate/markTemplateUsed'
+} => { request: '019a60f3-9420-7408-95da-f3e8b6bf3009' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutTemplate.markTemplateUsed {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  name: 'Chest Day',
+  date: '2025-11-08T00:52:46.956Z'
+} => {}
+Requesting.respond { request: '019a60f3-9420-7408-95da-f3e8b6bf3009' } => { request: '019a60f3-9420-7408-95da-f3e8b6bf3009' }
+[Requesting] Received request for path: /WorkoutTemplate/updateTemplate
+Requesting.request {
+  name: 'Chest Day',
+  exercises: [
+    { exercise: 'Slider Atomic Push Up', sets: [Array] },
+    { exercise: 'Double Cable Decline Bench Chest Fly', sets: [Array] },
+    { exercise: 'Barbell Bench Press', sets: [Array] }
+  ],
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutTemplate/updateTemplate'
+} => { request: '019a60f3-a011-7213-9c8d-e92f381abd89' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutTemplate.updateTemplate {
+  user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+  name: 'Chest Day',
+  exercises: [
+    { exercise: 'Slider Atomic Push Up', sets: [Array] },
+    { exercise: 'Double Cable Decline Bench Chest Fly', sets: [Array] },
+    { exercise: 'Barbell Bench Press', sets: [Array] }
+  ]
+} => {}
+Requesting.respond { request: '019a60f3-a011-7213-9c8d-e92f381abd89' } => { request: '019a60f3-a011-7213-9c8d-e92f381abd89' }
+[Requesting] Received request for path: /WorkoutTemplate/getTemplates
+Requesting.request {
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/WorkoutTemplate/getTemplates'
+} => { request: '019a60f3-a223-786c-ba65-83e8ffa13cf8' }
+UserAuthentication.authenticate { token: '019a60f1-5554-783b-91e5-9d260505363a' } => { userId: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' }
+WorkoutTemplate.getTemplates { user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc' } => {
+  templates: [
+    {
+      _id: '019a3d0a-b36b-728c-972e-41e6f1bf8daf',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'Chest Day',
+      exercises: [Array],
+      lastPerformed: '2025-11-08T00:52:46.956Z'
+    },
+    {
+      _id: '019a36db-76bf-74c5-8e21-fc40e7238ffe',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'core',
+      exercises: [Array],
+      lastPerformed: '2025-11-06T02:53:42.299Z'
+    },
+    {
+      _id: '019a3b5b-ff09-7625-930e-375ca224fdbc',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'leg day',
+      exercises: [Array],
+      lastPerformed: null
+    }
+  ]
+}
+Requesting.respond {
+  request: '019a60f3-a223-786c-ba65-83e8ffa13cf8',
+  templates: [
+    {
+      _id: '019a3d0a-b36b-728c-972e-41e6f1bf8daf',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'Chest Day',
+      exercises: [Array],
+      lastPerformed: '2025-11-08T00:52:46.956Z'
+    },
+    {
+      _id: '019a36db-76bf-74c5-8e21-fc40e7238ffe',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'core',
+      exercises: [Array],
+      lastPerformed: '2025-11-06T02:53:42.299Z'
+    },
+    {
+      _id: '019a3b5b-ff09-7625-930e-375ca224fdbc',
+      user: '019a2d0a-f4d5-7f17-9cf6-04c0c079a6fc',
+      name: 'leg day',
+      exercises: [Array],
+      lastPerformed: null
+    }
+  ]
+} => { request: '019a60f3-a223-786c-ba65-83e8ffa13cf8' }
+[Requesting] Received request for path: /UserAuthentication/logout
+Requesting.request {
+  token: '019a60f1-5554-783b-91e5-9d260505363a',
+  path: '/UserAuthentication/logout'
+} => { request: '019a60f3-b29b-7f83-bfb8-3056b874e230' }
+UserAuthentication.logout { token: '019a60f1-5554-783b-91e5-9d260505363a' } => {}
+Requesting.respond { request: '019a60f3-b29b-7f83-bfb8-3056b874e230' } => { request: '019a60f3-b29b-7f83-bfb8-3056b874e230' }

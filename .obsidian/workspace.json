@@ -172,6 +172,9 @@
   },
   "active": "60ccb8b74e272dda",
   "lastOpenFiles": [
+    "design/action_trace.txt",
+    "media/demo_video.mov",
+    "design/reflection.md",
     "src/syncs/syncs.ts",
     "src/syncs.ts",
     "src/syncs/app.sync.ts",
@@ -183,8 +186,6 @@
     "src/concepts/concepts.ts",
     "src/main.ts",
     "src/utils/main.ts",
-    "src/utils/init.ts",
-    "src/utils/generate_imports.ts",
     "src/concepts/Requesting/README.md",
     "design/background/implementing-synchronizations.md",
     "design/background/architecture.md",
@@ -206,7 +207,6 @@
     "context/design/tools/api-extraction-from-code.md/steps/_.534e93ad.md",
     "context/design/tools/api-extraction-from-code.md/steps/_.3a59af90.md",
     "context/design/tools/api-extraction-from-code.md/steps/_.331f5a1f.md",
-    "context/design/tools/api-extraction-from-code.md/steps/_.2086d81d.md",
-    "context/design/tools/api-extraction-from-code.md/steps/_.1bf7fdfc.md"
+    "context/design/tools/api-extraction-from-code.md/steps/_.2086d81d.md"
   ]
 }
